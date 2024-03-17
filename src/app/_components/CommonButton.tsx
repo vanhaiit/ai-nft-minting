@@ -1,0 +1,54 @@
+import React, { ComponentPropsWithRef, useMemo } from "react";
+import { twMerge } from "tailwind-merge";
+import { LongArrowIcon } from "./icon";
+
+const CommonButton: React.FC<CommonButtonProps> = ({
+  variant = CommonButtonVariantEnum.default,
+  isShowArrow = true,
+  className,
+  children,
+  ...otherProps
+}) => {
+  const variantStyle = useMemo(() => {
+    switch (variant) {
+      case CommonButtonVariantEnum.default:
+        return "text-neutral1 border-neutral1";
+      case CommonButtonVariantEnum.primary:
+        return "bg-primary1/20 text-primary1 border-primary1";
+
+      default:
+        return "";
+    }
+  }, [variant]);
+
+  return (
+    <button
+      className={twMerge(
+        "border",
+        "relative",
+        "py-2 pl-4",
+        isShowArrow ? "pr-8" : "pr-4",
+        variantStyle,
+        className
+      )}
+      {...otherProps}
+    >
+      {children}
+      {isShowArrow && (
+        <LongArrowIcon className="w-full absolute top-1/2 -right-14 -translate-y-1/2" />
+      )}
+    </button>
+  );
+};
+
+export default CommonButton;
+
+export interface CommonButtonProps extends ComponentPropsWithRef<"button"> {
+  variant?: CommonButtonVariantEnum;
+  isShowArrow?: boolean;
+}
+
+export enum CommonButtonVariantEnum {
+  default = "default",
+  primary = "primary",
+}

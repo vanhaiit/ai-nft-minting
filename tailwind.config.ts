@@ -8,6 +8,19 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        neutral1: "#F2F2F2",
+        neutral2: "#161616",
+        neutral3: "#353535",
+
+        primary1: "#00E0FF",
+      },
+
+      fontFamily: {
+        space_mono: ["var(--font-space-mono)", "sans-serif"],
+        roboto_mono: ["var(--font-roboto-mono)", "sans-serif"],
+      },
+
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

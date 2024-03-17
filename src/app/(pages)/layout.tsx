@@ -1,10 +1,22 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Roboto_Mono, Space_Mono } from "next/font/google";
 import "../globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { Button } from "antd";
+import MainLayoutHeader from "../_components/main-layout-header";
+import { twJoin } from "tailwind-merge";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto_mono = Roboto_Mono({
+  subsets: ["latin"],
+  variable: "--font-roboto-mono",
+  display: "swap",
+});
+
+const space_mono = Space_Mono({
+  subsets: ["latin"],
+  variable: "--font-space-mono",
+  display: "swap",
+  weight: ["400", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,9 +30,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Button type="primary">Button</Button>
-        <AntdRegistry>{children}</AntdRegistry>
+      <body className={twJoin(roboto_mono.className, space_mono.className)}>
+        <AntdRegistry>
+          <MainLayoutHeader />
+          <div
+            className={twJoin(
+              "font-roboto_mono",
+              "flex justify-center",
+              "min-h-[calc(100svh-80px)]",
+              "relative w-screen mt-20"
+            )}
+          >
+            {children}
+          </div>
+        </AntdRegistry>
       </body>
     </html>
   );
