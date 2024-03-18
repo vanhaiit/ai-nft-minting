@@ -1,17 +1,10 @@
-"use client";
-
-import React from "react";
+import Image from "next/image";
 import { twJoin } from "tailwind-merge";
 import { ImageAssets } from "../../../../../public";
-
-import Image from "next/image";
-import AccountButton from "./AccountButton";
+import ConnectWallet from "./ConnectWallet";
 import DesktopNavigation from "./DesktopNavigation";
-import ConnectWalletButton from "./ConnectWalletButton";
 
 const MainLayoutHeader = () => {
-  const isConnected = true;
-
   return (
     <div
       className={twJoin(
@@ -22,13 +15,13 @@ const MainLayoutHeader = () => {
     >
       <div
         className={twJoin(
-          "w-full h-full lg:max-w-[1300px] mx-auto",
+          "w-full h-full lg:max-w-[1320px] mx-auto",
           "space-between-root"
         )}
       >
         <Image src={ImageAssets.LogoImage} alt="" />
         <DesktopNavigation />
-        {isConnected ? <AccountButton /> : <ConnectWalletButton />}
+        <ConnectWallet />
       </div>
     </div>
   );

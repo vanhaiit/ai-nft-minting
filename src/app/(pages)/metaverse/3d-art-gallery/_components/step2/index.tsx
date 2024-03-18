@@ -2,10 +2,10 @@ import React, { ComponentPropsWithoutRef } from "react";
 import { twMerge, twJoin } from "tailwind-merge";
 import { ArrowIcon } from "@/app/_components/icon";
 import { TypeAnimation } from "react-type-animation";
-import { ImageAssets } from "../../../../../../public";
+import { ImageAssets } from "../../../../../../../public";
 
 import CommonButton from "@/app/_components/CommonButton";
-import AppProvider from "@/app/_components/AppProvider";
+import CommonContainer from "@/app/_components/CommonContainer";
 import MintItem from "./mint-item";
 
 const Section2 = () => {
@@ -16,7 +16,7 @@ const Section2 = () => {
 
   return (
     <div className={twMerge("w-full h-full", "flex flex-col ")}>
-      <AppProvider
+      <CommonContainer
         containerClassName="w-full pt-20 pb-6"
         className="justify-center gap-y-8"
       >
@@ -40,8 +40,8 @@ const Section2 = () => {
           />
         </div>
         <CommonButton className="w-fit mx-auto">Upload</CommonButton>
-      </AppProvider>
-      <AppProvider
+      </CommonContainer>
+      <CommonContainer
         containerClassName="border-t py-10"
         className="flex-row space-between-root gap-x-6"
       >
@@ -52,7 +52,7 @@ const Section2 = () => {
             urlImage={item.urlImage}
           />
         ))}
-      </AppProvider>
+      </CommonContainer>
     </div>
   );
 };

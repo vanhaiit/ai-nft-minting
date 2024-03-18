@@ -17,12 +17,10 @@ const config: Config = {
         black1: "#000000",
         primary1: "#00E0FF",
       },
-
       fontFamily: {
         space: ["var(--font-space-mono)", "sans-serif"],
         roboto: ["var(--font-roboto-mono)", "sans-serif"],
       },
-
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

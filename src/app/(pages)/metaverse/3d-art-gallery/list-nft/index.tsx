@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from "react";
 import { ImageAssets } from "../../../../../../public";
 
-import AppProvider from "@/app/_components/AppProvider";
 import SearchInput from "./SearchInput";
 import Navigation from "./Navigation";
 import Image from "next/image";
+import CommonContainer from "@/app/_components/CommonContainer";
 
 const ListNft = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,7 +14,7 @@ const ListNft = () => {
   }, [currentPage]);
 
   return (
-    <AppProvider className="flex flex-col h-full gap-y-6 mt-20 mb-10">
+    <CommonContainer className="flex flex-col h-full gap-y-6 mt-20 mb-10">
       <div className="flex flex-col font-space text-2xl">
         <p>Here are NFTs that you minted...</p>
         <span className="flex items-center">
@@ -39,7 +39,7 @@ const ListNft = () => {
         totalPage={Math.ceil(MOCK_DATA_LIST_NFT.length / 8)}
         onChange={(value) => setCurrentPage(value)}
       />
-    </AppProvider>
+    </CommonContainer>
   );
 };
 
