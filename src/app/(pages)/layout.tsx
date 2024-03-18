@@ -30,7 +30,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={twJoin(roboto_mono.className, space_mono.className)}>
+      <body
+        className={twJoin(roboto_mono.className, space_mono.className)}
+        suppressHydrationWarning={true}
+      >
         <AntdRegistry>
           <MainLayoutHeader />
           <div

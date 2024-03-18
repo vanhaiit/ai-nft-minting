@@ -12,6 +12,7 @@ const config: Config = {
         neutral1: "#F2F2F2",
         neutral2: "#161616",
         neutral3: "#353535",
+        neutral4: "#757575",
 
         primary1: "#00E0FF",
       },

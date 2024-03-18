@@ -35,7 +35,7 @@ const CommonButton: React.FC<CommonButtonProps> = ({
     >
       {children}
       {isShowArrow && (
-        <LongArrowIcon className="w-full absolute top-1/2 -right-14 -translate-y-1/2" />
+        <LongArrowIcon className="absolute top-1/2 -right-6 -translate-y-1/2" />
       )}
     </button>
   );

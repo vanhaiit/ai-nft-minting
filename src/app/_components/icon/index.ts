@@ -1,3 +1,4 @@
 import LongArrowIcon from "./LongArrowIcon";
+import ArrowIcon from "./ArrowIcon";
 
-export { LongArrowIcon };
+export { LongArrowIcon, ArrowIcon };
