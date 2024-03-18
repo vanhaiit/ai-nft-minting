@@ -14,7 +14,7 @@ const CommonButton: React.FC<CommonButtonProps> = ({
       case CommonButtonVariantEnum.default:
         return "text-neutral1 border-neutral1";
       case CommonButtonVariantEnum.primary:
-        return "bg-primary1/20 text-primary1 border-primary1";
+        return "bg-primary1 text-black1 border-primary1";
 
       default:
         return "";
