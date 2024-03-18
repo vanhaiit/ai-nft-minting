@@ -1,7 +1,7 @@
 import React, { ComponentPropsWithoutRef } from "react";
 import { twMerge } from "tailwind-merge";
 
-const AppProvider: React.FC<PageProps> = ({
+const CommonContainer: React.FC<PageProps> = ({
   children,
   className,
   containerClassName,
@@ -23,7 +23,7 @@ const AppProvider: React.FC<PageProps> = ({
   );
 };
 
-export default AppProvider;
+export default CommonContainer;
 
 interface PageProps extends ComponentPropsWithoutRef<"div"> {
   containerClassName?: string;

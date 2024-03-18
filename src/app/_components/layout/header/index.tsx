@@ -22,7 +22,7 @@ const MainLayoutHeader = () => {
     >
       <div
         className={twJoin(
-          "w-full h-full lg:max-w-[1300px] mx-auto",
+          "w-full h-full lg:max-w-[1320px] mx-auto",
           "space-between-root"
         )}
       >

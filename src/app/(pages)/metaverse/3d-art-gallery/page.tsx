@@ -2,7 +2,7 @@
 import { useWindowSize } from "@/hooks";
 import { TypeAnimation } from "react-type-animation";
 import { twMerge } from "tailwind-merge";
-import AppProvider from "@/app/_components/AppProvider";
+import CommonContainer from "@/app/_components/CommonContainer";
 import CommonButton from "@/app/_components/CommonButton";
 import WaveAnimation from "@/app/_components/WaveAnimation";
 
@@ -13,7 +13,7 @@ const ArtGallery = () => {
       <div
         className={twMerge("w-full h-full", "flex flex-col justify-between")}
       >
-        <AppProvider containerClassName="py-20">
+        <CommonContainer containerClassName="py-20">
           <p className="w-3/4 !text-white text-[50px] font-bold text-space_mono uppercase">
             <TypeAnimation
               sequence={[
@@ -23,8 +23,8 @@ const ArtGallery = () => {
               cursor={false}
             />
           </p>
-        </AppProvider>
-        <AppProvider containerClassName="border-t">
+        </CommonContainer>
+        <CommonContainer containerClassName="border-t">
           <div className="grid grid-cols-2">
             <p className="text-xl pt-12 pr-16 pb-4 border-r !text-white">
               <TypeAnimation
@@ -50,7 +50,7 @@ const ArtGallery = () => {
             </p>
           </div>
           <CommonButton className="w-fit mt-4 mx-auto">Generate</CommonButton>
-        </AppProvider>
+        </CommonContainer>
         <WaveAnimation width={windowWidth} height={windowHeight / 2.5} />
       </div>
     </div>

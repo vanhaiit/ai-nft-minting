@@ -4,7 +4,7 @@ import { ArrowIcon } from "@/app/_components/icon";
 import { TypeAnimation } from "react-type-animation";
 
 import CommonButton from "@/app/_components/CommonButton";
-import AppProvider from "@/app/_components/AppProvider";
+import CommonContainer from "@/app/_components/CommonContainer";
 
 const Section2 = () => {
   const sequence = [
@@ -14,7 +14,7 @@ const Section2 = () => {
 
   return (
     <div className={twMerge("w-full h-full", "flex flex-col ")}>
-      <AppProvider
+      <CommonContainer
         containerClassName="w-full pt-20 pb-6"
         className="justify-center gap-y-8"
       >
@@ -38,8 +38,8 @@ const Section2 = () => {
           />
         </div>
         <CommonButton className="w-fit mx-auto">Upload</CommonButton>
-      </AppProvider>
-      <AppProvider containerClassName="border-t">
+      </CommonContainer>
+      <CommonContainer containerClassName="border-t">
         <div className="grid grid-cols-2">
           <p className="text-xl pt-12 pr-16 pb-4 border-r">
             AI technology will serve as a catalyst for innovation by converging
@@ -52,7 +52,7 @@ const Section2 = () => {
             using the latest version of image generative AI model.
           </p>
         </div>
-      </AppProvider>
+      </CommonContainer>
     </div>
   );
 };
