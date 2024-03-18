@@ -1,4 +1,6 @@
+import { RainBowProviders } from "@/libs/rainbow/providers";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import "@rainbow-me/rainbowkit/styles.css";
 import type { Metadata } from "next";
 import { Roboto_Mono, Space_Mono } from "next/font/google";
 import { twJoin } from "tailwind-merge";
@@ -34,19 +36,21 @@ export default function RootLayout({
         className={twJoin(roboto_mono.className, space_mono.className)}
         suppressHydrationWarning={true}
       >
-        <AntdRegistry>
-          <MainLayoutHeader />
-          <div
-            className={twJoin(
-              "font-roboto_mono",
-              "flex justify-center",
-              "min-h-[calc(100svh-80px)]",
-              "relative w-screen mt-20"
-            )}
-          >
-            {children}
-          </div>
-        </AntdRegistry>
+        <RainBowProviders>
+          <AntdRegistry>
+            <MainLayoutHeader />
+            <div
+              className={twJoin(
+                "font-roboto_mono",
+                "flex justify-center",
+                "min-h-[calc(100svh-80px)]",
+                "relative w-screen mt-20"
+              )}
+            >
+              {children}
+            </div>
+          </AntdRegistry>
+        </RainBowProviders>
       </body>
     </html>
   );

@@ -1,0 +1,76 @@
+export enum HttpErrorCode {
+  SUCCESS = 2000,
+  WRONG_PASSWORD = 4001,
+  VERIFY_SIGNATURE_FAILED = 4002,
+  VERIFY_RECAPTCHA_FAIL = 4003,
+  VERIFY_2FA_FAILED = 4004,
+  GOOGLE_AUTH_CODE_EMPTY = 4005,
+  INCORRECT_GOOGLE_CODE = 4006,
+  ENABLED_2FA = 4007,
+  EMAIL_NOT_INTERGRATED = 4008,
+  USER_REVOKED = 4009,
+  PHONE_EXIST = 40010,
+  EXISTED_USER = 40011,
+  INVALID_TOKEN = 40012,
+  USERNAME_EXISTED = 40013,
+  GENERATE_VAULT_FAILED = 40014,
+  REFERENCE_CODE_EXISTED = 40015,
+  GG_ACCOUNT_LINKED = 40016,
+  METAMASK_ACCOUNT_LINKED = 40017,
+  INCORRECT_REFERENCE_CODE = 40018,
+  GLIVE_FAILED = 40019,
+  GLIVE_CHANNEL_EMPTY = 2009,
+  // Unauthorized
+  UNAUTHORIZED = 4010,
+  // Forbiden
+  FORBIDDEN_RESOURCE = 4030,
+  // Not found
+  ADMIN_NOT_FOUND = 4040,
+  USER_NOT_FOUND = 4041,
+  GLIVE_CHANNEL_NOT_FOUND = 4042,
+  COUNTRY_NOT_FOUND = 4043,
+  // System
+  OTHER_SYSTEM_ERROR = 5000,
+  INVALID_ADDRESS = 3001,
+  INVALID_WHITELISTED_ADDRESS = 7006,
+  // User banned
+  USER_BANNED = 40020,
+  ACCOUNT_NOT_ASSOCIATED = 40021,
+  ACCOUNT_ASSOCIATED = 40022,
+  // Bet
+  FindGameRunnerDetailCanNotFind = 12000,
+  FetchGameRunnerDetailError = 12001,
+  DecodeStructureError = 12002,
+  CreateGameRunnerDetailError = 12003,
+  RunnerIsNotReadyForBet = 12004,
+  WinningLimitExceed = 12005,
+  BetLimitExceed = 12006,
+  WagerCanNotSave = 12007,
+  WagerCanNotFind = 12008,
+  InvalidGameStatus = 12009,
+  CountUserTotalWonError = 12010,
+}
+
+export const HttpErrorMessage: Record<HttpErrorCode | number | string, string> =
+  {
+    [HttpErrorCode.WRONG_PASSWORD]: "wrong-password-message",
+    [HttpErrorCode.USER_NOT_FOUND]: "account-not-found-message",
+    [HttpErrorCode.ACCOUNT_NOT_ASSOCIATED]: "account-not-found-message",
+    [HttpErrorCode.USER_REVOKED]: "inactive-account",
+    [HttpErrorCode.USER_BANNED]: "inactive-account",
+    [HttpErrorCode.VERIFY_RECAPTCHA_FAIL]: "verify-captcha",
+    [HttpErrorCode.EXISTED_USER]: "existed-user",
+    [HttpErrorCode.PHONE_EXIST]: "phone-exist",
+    [HttpErrorCode.USERNAME_EXISTED]: "username-existed",
+    [HttpErrorCode.GLIVE_FAILED]: "live-url-not-found",
+    [HttpErrorCode.INVALID_ADDRESS]: "invalid-wallet-address",
+    [HttpErrorCode.INVALID_WHITELISTED_ADDRESS]: "invalid-wallet-address",
+    [HttpErrorCode.UNAUTHORIZED]: "unauthorize",
+    [HttpErrorCode.INCORRECT_REFERENCE_CODE]: "referral-code-incorrect",
+    [HttpErrorCode.REFERENCE_CODE_EXISTED]: "referral-code-existed",
+    [HttpErrorCode.ACCOUNT_ASSOCIATED]: "login-account-associated",
+    [HttpErrorCode.InvalidGameStatus]: "invalid-bet-game-status",
+    [HttpErrorCode.WagerCanNotSave]: "wager-cannot-save",
+  };
+
+export const UNAUTHORIZED_CODE = 401;
