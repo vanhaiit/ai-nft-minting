@@ -2,7 +2,7 @@
 
 import React from "react";
 import { twJoin } from "tailwind-merge";
-import CommonDropdown from "../CommonDropdown";
+import CommonDropdown from "../../CommonDropdown";
 
 const AccountButton = () => {
   return (

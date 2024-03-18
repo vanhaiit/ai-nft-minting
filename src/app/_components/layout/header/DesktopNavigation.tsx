@@ -14,7 +14,7 @@ import { usePathname } from "next/navigation";
 import { twJoin, twMerge } from "tailwind-merge";
 
 import Link from "next/link";
-import CommonDropdown from "../CommonDropdown";
+import CommonDropdown from "../../CommonDropdown";
 
 const DesktopNavigation = () => {
   const pathname = usePathname();

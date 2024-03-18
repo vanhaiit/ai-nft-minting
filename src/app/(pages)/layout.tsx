@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import { Inter, Roboto_Mono, Space_Mono } from "next/font/google";
-import "../globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import MainLayoutHeader from "../_components/main-layout-header";
+import type { Metadata } from "next";
+import { Roboto_Mono, Space_Mono } from "next/font/google";
 import { twJoin } from "tailwind-merge";
+import MainLayoutHeader from "../_components/layout/header";
+import "../globals.css";
 
 const roboto_mono = Roboto_Mono({
   subsets: ["latin"],

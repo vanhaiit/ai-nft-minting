@@ -1,8 +1,9 @@
+"use client";
+import { useWindowSize } from "@/hooks";
 import React, { ComponentPropsWithRef, useEffect, useRef } from "react";
 import {
   BufferAttribute,
   Clock,
-  Color,
   PerspectiveCamera,
   PlaneGeometry,
   Points,
@@ -10,7 +11,6 @@ import {
   ShaderMaterial,
   WebGLRenderer,
 } from "three";
-import { twMerge } from "tailwind-merge";
 
 interface MyThreeJsComponentProps extends ComponentPropsWithRef<"canvas"> {
   width: number;

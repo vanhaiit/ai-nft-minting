@@ -3,8 +3,8 @@ import { twMerge, twJoin } from "tailwind-merge";
 import { ArrowIcon } from "@/app/_components/icon";
 import { TypeAnimation } from "react-type-animation";
 
-import WrapperPage from "../_WrapperPage";
 import CommonButton from "@/app/_components/CommonButton";
+import AppProvider from "@/app/_components/AppProvider";
 
 const Section2 = () => {
   const sequence = [
@@ -14,12 +14,13 @@ const Section2 = () => {
 
   return (
     <div className={twMerge("w-full h-full", "flex flex-col ")}>
-      <WrapperPage
+      <AppProvider
         containerClassName="w-full pt-20 pb-6"
         className="justify-center gap-y-8"
       >
-        {sequence.map((item) => (
+        {sequence.map((item, index) => (
           <TypeAnimation
+            key={index}
             sequence={[item]}
             wrapper="p"
             cursor={false}
@@ -37,8 +38,8 @@ const Section2 = () => {
           />
         </div>
         <CommonButton className="w-fit mx-auto">Upload</CommonButton>
-      </WrapperPage>
-      <WrapperPage containerClassName="border-t">
+      </AppProvider>
+      <AppProvider containerClassName="border-t">
         <div className="grid grid-cols-2">
           <p className="text-xl pt-12 pr-16 pb-4 border-r">
             AI technology will serve as a catalyst for innovation by converging
@@ -51,7 +52,7 @@ const Section2 = () => {
             using the latest version of image generative AI model.
           </p>
         </div>
-      </WrapperPage>
+      </AppProvider>
     </div>
   );
 };

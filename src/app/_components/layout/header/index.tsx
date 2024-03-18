@@ -2,7 +2,7 @@
 
 import React from "react";
 import { twJoin } from "tailwind-merge";
-import { ImageAssets } from "../../../../public";
+import { ImageAssets } from "../../../../../public";
 
 import Image from "next/image";
 import AccountButton from "./AccountButton";
