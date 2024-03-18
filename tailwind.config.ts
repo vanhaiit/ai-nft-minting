@@ -14,12 +14,13 @@ const config: Config = {
         neutral3: "#353535",
         neutral4: "#757575",
 
+        black1: "#000000",
         primary1: "#00E0FF",
       },
 
       fontFamily: {
-        space_mono: ["var(--font-space-mono)", "sans-serif"],
-        roboto_mono: ["var(--font-roboto-mono)", "sans-serif"],
+        space: ["var(--font-space-mono)", "sans-serif"],
+        roboto: ["var(--font-roboto-mono)", "sans-serif"],
       },
 
       backgroundImage: {

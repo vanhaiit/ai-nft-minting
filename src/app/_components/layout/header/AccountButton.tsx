@@ -9,17 +9,19 @@ const AccountButton = () => {
     <CommonDropdown
       contentDropdown={
         <>
-          <p
+          <button
             className={twJoin(
               "py-2",
               "w-full",
               "border-b border-neutral3",
-              "text-neutral1 text-center"
+              "text-neutral1 text-center hover:text-primary1"
             )}
           >
             My AI-generated NFTs
-          </p>
-          <p className="w-full py-2 text-center">Sign-out</p>
+          </button>
+          <button className="w-full py-2 text-center hover:text-primary1">
+            Sign-out
+          </button>
         </>
       }
     >

@@ -23,12 +23,13 @@ const CommonDropdown: React.FC<CommonDropdownProps> = ({
             "mt-[25px]",
             "bg-neutral2",
             "flex flex-col",
-            "text-neutral1 center-root"
+            "text-neutral1 center-root font-roboto"
           )}
         >
           {contentDropdown}
         </div>
       )}
+      className="!font-roboto"
       {...otherProps}
     >
       <button onClick={() => setIsOpen(true)}>{children}</button>

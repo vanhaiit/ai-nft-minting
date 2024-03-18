@@ -37,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={twJoin(roboto_mono.className, space_mono.className)}
+        className={twJoin(roboto_mono.variable, space_mono.variable)}
         suppressHydrationWarning={true}
       >
         <ThemeConfigProvider theme={themeConfig}>
@@ -47,8 +47,8 @@ export default function RootLayout({
                 <MainLayoutHeader />
                 <div
                   className={twJoin(
-                    "font-roboto_mono",
                     "flex justify-center",
+                    "font-roboto text-neutral1",
                     "min-h-[calc(100svh-80px)]",
                     "relative w-screen mt-20"
                   )}

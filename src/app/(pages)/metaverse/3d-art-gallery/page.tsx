@@ -5,16 +5,19 @@ import { twMerge } from "tailwind-merge";
 import AppProvider from "@/app/_components/AppProvider";
 import CommonButton from "@/app/_components/CommonButton";
 import WaveAnimation from "@/app/_components/WaveAnimation";
+import Section2 from "./_section2";
+import ListNft from "./list-nft";
 
 const ArtGallery = () => {
   const { windowWidth, windowHeight } = useWindowSize();
+
   return (
     <div className="w-full">
-      <div
+      {/* <div
         className={twMerge("w-full h-full", "flex flex-col justify-between")}
       >
         <AppProvider containerClassName="py-20">
-          <p className="w-3/4 !text-white text-[50px] font-bold text-space_mono uppercase">
+          <p className="w-3/4 !text-white text-[50px] font-bold font-space uppercase">
             <TypeAnimation
               sequence={[
                 "Get ready for the imminent mass adoption of artificial intelligence...",
@@ -52,7 +55,9 @@ const ArtGallery = () => {
           <CommonButton className="w-fit mt-4 mx-auto">Generate</CommonButton>
         </AppProvider>
         <WaveAnimation width={windowWidth} height={windowHeight / 2.5} />
-      </div>
+      </div> */}
+      {/* <Section2 /> */}
+      <ListNft />
     </div>
   );
 };
