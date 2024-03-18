@@ -12,3 +12,5 @@ export const METAVERSE = "/metaverse";
 export const CRYPTO_VOXEL = "/metaverse/crypto-voxel";
 export const ART_GALLERY = "/metaverse/art-gallery";
 export const NFT_AI = "/nft-ai";
+
+export const Notification_Duration = 5;

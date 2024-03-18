@@ -1,4 +1,6 @@
+import ThemeConfigProvider from "@/libs/antd/ConfigProvider";
 import { RainBowProviders } from "@/libs/rainbow/providers";
+import { themeConfig } from "@/theme";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import "@rainbow-me/rainbowkit/styles.css";
 import type { Metadata } from "next";
@@ -6,6 +8,8 @@ import { Roboto_Mono, Space_Mono } from "next/font/google";
 import { twJoin } from "tailwind-merge";
 import MainLayoutHeader from "../_components/layout/header";
 import "../globals.css";
+import { ReduxProvider } from "@/libs/redux/provider";
+import { NotificationProvider } from "../_components/notification";
 
 const roboto_mono = Roboto_Mono({
   subsets: ["latin"],
@@ -36,21 +40,25 @@ export default function RootLayout({
         className={twJoin(roboto_mono.className, space_mono.className)}
         suppressHydrationWarning={true}
       >
-        <RainBowProviders>
-          <AntdRegistry>
-            <MainLayoutHeader />
-            <div
-              className={twJoin(
-                "font-roboto_mono",
-                "flex justify-center",
-                "min-h-[calc(100svh-80px)]",
-                "relative w-screen mt-20"
-              )}
-            >
-              {children}
-            </div>
-          </AntdRegistry>
-        </RainBowProviders>
+        <ThemeConfigProvider theme={themeConfig}>
+          <ReduxProvider>
+            <RainBowProviders>
+              <AntdRegistry>
+                <MainLayoutHeader />
+                <div
+                  className={twJoin(
+                    "font-roboto_mono",
+                    "flex justify-center",
+                    "min-h-[calc(100svh-80px)]",
+                    "relative w-screen mt-20"
+                  )}
+                >
+                  <NotificationProvider>{children}</NotificationProvider>
+                </div>
+              </AntdRegistry>
+            </RainBowProviders>
+          </ReduxProvider>
+        </ThemeConfigProvider>
       </body>
     </html>
   );
