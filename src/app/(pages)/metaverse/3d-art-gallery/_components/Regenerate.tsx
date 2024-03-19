@@ -10,7 +10,8 @@ const Regenerate: React.FC<RegenerateProps> = ({
   return (
     <div
       className={twMerge(
-        "w-[424px] h-[424px] relative border-4 border-primary1",
+        "w-[424px] h-[424px] relative hover:border-4 border-primary1",
+        "[&>.coating]:hover:!flex",
         className
       )}
       {...otherProps}
@@ -20,7 +21,7 @@ const Regenerate: React.FC<RegenerateProps> = ({
         alt=""
         className="w-full h-full absolute top-0 left-0 -z-10"
       />
-      <div className="w-full h-full flex-col center-root px-11 bg-black1/80 gap-y-2">
+      <div className="coating w-full hidden h-full flex-col items-center justify-center px-11 bg-black1/80 gap-y-2 ">
         <p className="font-medium">
           I do not like this image. I want to regenerate one more.
         </p>

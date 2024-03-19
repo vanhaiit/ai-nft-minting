@@ -1,29 +1,34 @@
 "use client";
 
-import React, { ComponentPropsWithoutRef } from "react";
+import React, { ComponentPropsWithoutRef, useState } from "react";
 import { twMerge, twJoin } from "tailwind-merge";
 import { CheckIcon } from "@/app/_components/icon";
-
-import Image from "next/image";
 import { TypeAnimation } from "react-type-animation";
 import { ImageAssets } from "../../../../../../public";
 
+import Image from "next/image";
+import MintNftModal from "./MintNftModal";
+
 const MintItem: React.FC<MintItemProps> = ({
+  isMinted,
   urlImage,
   className,
+  onRegenerate,
   ...otherProps
 }) => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
   return (
     <div
       className={twMerge(
         "relative",
         "bg-neutral2",
         "center-root",
+        !isMinted && "cursor-pointer",
         "translate-hidden",
+        "border-4 border-transparent",
         "w-full h-full max-w-[424px] max-h-[424px]",
-        "border-4 border-transparent hover:border-primary1",
-        "[&>.button]:hover:!bg-primary1 [&>.button]:hover:!text-black",
-        "[&>.button.icon]:!hover:!block",
+        isMinted && "border-primary1 disable",
         className
       )}
       {...otherProps}
@@ -48,17 +53,31 @@ const MintItem: React.FC<MintItemProps> = ({
       )}
       <button
         className={twJoin(
+          "h-[calc(100%-56px)] w-full absolute top-0 left-0 opacity-0"
+        )}
+        disabled={isMinted}
+        onClick={onRegenerate}
+      ></button>
+      <button
+        className={twJoin(
           "py-4",
           "w-full",
           "button",
-          "bg-black1/70",
+          isMinted ? "bg-primary1 text-black" : "bg-black1/70",
           "center-root gap-x-2",
           "absolute bottom-0 left-0"
         )}
+        onClick={() => setIsOpenModal(true)}
+        disabled={isMinted}
       >
-        <CheckIcon className={twJoin("icon", "hidden text-black1")} />
+        {isMinted && <CheckIcon className={twJoin("icon", "text-black1")} />}
         Mint
       </button>
+      <MintNftModal
+        open={isOpenModal}
+        onCancel={() => setIsOpenModal(false)}
+        urlImage={urlImage}
+      />
     </div>
   );
 };
@@ -66,5 +85,8 @@ const MintItem: React.FC<MintItemProps> = ({
 export default MintItem;
 
 interface MintItemProps extends ComponentPropsWithoutRef<"div"> {
+  isMinted: boolean;
   urlImage: string;
+
+  onRegenerate: () => void;
 }

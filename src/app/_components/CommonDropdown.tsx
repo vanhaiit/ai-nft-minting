@@ -1,12 +1,13 @@
 "use client";
 
 import React, { ReactNode, useState } from "react";
-import { twJoin } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 import { Dropdown, DropdownProps } from "antd";
 
 const CommonDropdown: React.FC<CommonDropdownProps> = ({
   children,
   contentDropdown,
+  className,
   ...otherProps
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,12 +19,13 @@ const CommonDropdown: React.FC<CommonDropdownProps> = ({
       onOpenChange={() => setIsOpen(false)}
       dropdownRender={() => (
         <div
-          className={twJoin(
-            "w-full ",
+          className={twMerge(
+            "w-full",
             "mt-[25px]",
             "bg-neutral2",
             "flex flex-col",
-            "text-neutral1 center-root font-roboto"
+            "text-neutral1 center-root font-roboto",
+            className
           )}
         >
           {contentDropdown}
@@ -39,6 +41,6 @@ const CommonDropdown: React.FC<CommonDropdownProps> = ({
 
 export default CommonDropdown;
 
-interface CommonDropdownProps extends DropdownProps {
+export interface CommonDropdownProps extends DropdownProps {
   contentDropdown: ReactNode;
 }

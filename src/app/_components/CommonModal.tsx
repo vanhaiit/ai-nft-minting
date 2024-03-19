@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, ModalProps } from "antd";
 
-const CommonModal: React.FC<CommonModalProps> = ({
+const CommonModal: React.FC<ModalProps> = ({
   children,
   open,
   ...otherProps
@@ -21,5 +21,3 @@ const CommonModal: React.FC<CommonModalProps> = ({
 };
 
 export default CommonModal;
-
-interface CommonModalProps extends ModalProps {}

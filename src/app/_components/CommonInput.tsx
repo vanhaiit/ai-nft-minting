@@ -9,7 +9,7 @@ const CommonInput: React.FC<CommonInputProps> = ({
   ...otherProps
 }) => {
   return (
-    <div className={twMerge("w-fit h-fit", "relative")}>
+    <div className={twMerge("relative")}>
       <input
         className={twMerge(
           "text-sm",

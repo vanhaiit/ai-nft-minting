@@ -7,6 +7,8 @@ import { injected } from "wagmi/connectors";
 import { twJoin } from "tailwind-merge";
 import { formatAddress } from "@/helpers";
 import get from "lodash/get";
+import Link from "next/link";
+import { GENERATE } from "@/constants";
 
 const ConnectWalletButton = (props: any) => {
   const account = useAccount();
@@ -27,7 +29,8 @@ const ConnectWalletButton = (props: any) => {
     <CommonDropdown
       contentDropdown={
         <>
-          <button
+          <Link
+            href={GENERATE}
             className={twJoin(
               "py-2",
               "w-full",
@@ -36,7 +39,7 @@ const ConnectWalletButton = (props: any) => {
             )}
           >
             My AI-generated NFTs
-          </button>
+          </Link>
           <button
             onClick={() => disconnect()}
             className="w-full py-2 text-center cursor-pointer"

@@ -6,17 +6,21 @@ const StepNavigation: React.FC<StepNavigationProps> = ({ step }) => {
   return (
     <div
       className={twJoin(
-        "w-full h-1",
-        "fixed z-50 bottom-4",
-        "flex items-center gap-x-4"
+        "w-full h-1 py-3",
+        "fixed z-50 bottom-0",
+        " items-center gap-x-4 bg-black1",
+        Number(step) < 4 ? "flex" : "hidden"
       )}
     >
-      {Object.values(StepEnum).map((item, index) => (
-        <StepNavigationItems
-          key={index}
-          className={twJoin(item === step && "bg-neutral1")}
-        />
-      ))}
+      <StepNavigationItems
+        className={twJoin(StepEnum.STEP_1 === step && "bg-neutral1")}
+      />
+      <StepNavigationItems
+        className={twJoin(StepEnum.STEP_2 === step && "bg-neutral1")}
+      />
+      <StepNavigationItems
+        className={twJoin(StepEnum.STEP_3 === step && "bg-neutral1")}
+      />
     </div>
   );
 };
@@ -29,7 +33,7 @@ const StepNavigationItems: React.FC<ComponentPropsWithoutRef<"div">> = ({
 }) => {
   return (
     <span
-      className={twMerge("w-full h-full bg-neutral1/50", className)}
+      className={twMerge("w-full h-1 bg-neutral1/50", className)}
       {...otherProps}
     />
   );

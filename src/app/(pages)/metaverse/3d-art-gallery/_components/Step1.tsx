@@ -20,19 +20,19 @@ const Step1: React.FC<Step1Props> = ({ onChangeStep }) => {
       <div
         className={twMerge("w-full h-full", "flex flex-col justify-between")}
       >
-        <CommonContainer containerClassName="py-20">
+        <CommonContainer containerClassName="py-20" className="min-h-[255px]">
           <p className="w-3/4 !text-white text-[50px] font-bold text-space_mono uppercase">
             <TypeAnimation
               sequence={[
                 "Get ready for the imminent mass adoption of artificial intelligence...",
               ]}
-              className="!text-white"
+              className="!text-white "
               cursor={false}
             />
           </p>
         </CommonContainer>
         <CommonContainer containerClassName="border-t">
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-2 min-h-[234px]">
             <p className="text-xl pt-12 pr-16 pb-4 border-r !text-white">
               <TypeAnimation
                 sequence={[
@@ -40,8 +40,7 @@ const Step1: React.FC<Step1Props> = ({ onChangeStep }) => {
                  various technological fields such as blockchain, energy storage,
                  robotics, and multiomic sequencing....`,
                 ]}
-                className="!text-white"
-                cursor={false}
+                className="!text-white "
               />
             </p>
             <p className="text-xl pt-12 ml-16 pb-4 !text-white">
