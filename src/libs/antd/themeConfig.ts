@@ -9,7 +9,23 @@ const LightTheme: ThemeConfig = {
     colorError: "#dd3b3a",
     colorBgBase: "#fff",
     colorTextBase: "#000",
-    fontFamily: "SF Pro Display",
+    fontFamily: "var(--font-roboto-mono)",
+  },
+  components: {
+    Modal: {
+      contentBg: "rgb(22, 22, 22)",
+      borderRadiusLG: 0,
+      borderRadiusSM: 0,
+      titleColor: "rgb(255, 255, 255)",
+      padding: 24,
+      headerBg: "rgb(22, 22, 22)",
+      footerBg: "rgb(22, 22, 22)",
+      colorText: "rgb(255, 255, 255)",
+      fontSize: 20,
+      fontSizeHeading5: 20,
+      fontSizeLG: 20,
+      colorBgMask: "rgba(0, 0, 0, 0.7)",
+    },
   },
 };
 
@@ -22,7 +38,23 @@ const DarkTheme: ThemeConfig = {
     colorError: "#dd3b3a",
     colorBgBase: "#000",
     colorTextBase: "#fff",
-    fontFamily: "SF Pro Display",
+    fontFamily: "var(--font-roboto-mono)",
+  },
+  components: {
+    Modal: {
+      contentBg: "rgb(22, 22, 22)",
+      borderRadiusLG: 0,
+      borderRadiusSM: 0,
+      titleColor: "rgb(255, 255, 255)",
+      padding: 24,
+      headerBg: "rgb(22, 22, 22)",
+      footerBg: "rgb(22, 22, 22)",
+      colorText: "rgb(255, 255, 255)",
+      fontSize: 20,
+      fontSizeHeading5: 20,
+      fontSizeLG: 20,
+      colorBgMask: "rgba(0, 0, 0, 0.7)",
+    },
   },
 };
 

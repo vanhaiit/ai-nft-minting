@@ -123,7 +123,7 @@ const WaveAnimation: React.FC<MyThreeJsComponentProps> = ({
     }
   }, [width, height]);
 
-  return <canvas ref={canvasRef} className="webgl -mt-40 -z-50" />;
+  return <canvas ref={canvasRef} className="webgl -mt-72 -z-50" />;
 };
 
 export default WaveAnimation;

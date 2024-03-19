@@ -3,11 +3,18 @@ import { useWindowSize } from "@/hooks";
 import { TypeAnimation } from "react-type-animation";
 import { twMerge } from "tailwind-merge";
 import CommonContainer from "@/app/_components/CommonContainer";
-import CommonButton from "@/app/_components/CommonButton";
+import CommonButton, {
+  CommonButtonVariantEnum,
+} from "@/app/_components/CommonButton";
 import WaveAnimation from "@/app/_components/WaveAnimation";
+import { useState } from "react";
+import CommonModal from "@/app/_components/CommonModal";
+import { StepEnum } from "@/types";
 
-function Step1() {
+const Step1: React.FC<Step1Props> = ({ onChangeStep }) => {
   const { windowWidth, windowHeight } = useWindowSize();
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="w-full">
       <div
@@ -49,12 +56,37 @@ function Step1() {
               />
             </p>
           </div>
-          <CommonButton className="w-fit mt-4 mx-auto">Generate</CommonButton>
+          <CommonButton
+            className="w-fit mt-4 mx-auto"
+            onClick={() => onChangeStep(StepEnum.STEP_2)}
+          >
+            Generate
+          </CommonButton>
         </CommonContainer>
-        <WaveAnimation width={windowWidth} height={windowHeight / 2.5} />
+        <WaveAnimation width={windowWidth} height={windowHeight / 2} />
       </div>
+      <CommonModal open={isOpen} onCancel={() => setIsOpen(false)}>
+        <div className="center-root flex-col gap-y-3">
+          <p className="text-xl">Congrats!</p>
+          <p>
+            It seems that you’re already an Alpha Quark Token holder! You can
+            use the latest version of AI model to generate images!
+          </p>
+          <CommonButton
+            variant={CommonButtonVariantEnum.primary}
+            isShowArrow={false}
+            className="text-sm"
+          >
+            I got it
+          </CommonButton>
+        </div>
+      </CommonModal>
     </div>
   );
-}
+};
 
 export default Step1;
+
+interface Step1Props {
+  onChangeStep: (value: StepEnum) => void;
+}

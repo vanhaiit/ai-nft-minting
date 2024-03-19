@@ -16,11 +16,15 @@
   }
 } */
 
- body {
+body {
   color: rgb(var(--foreground-rgb));
   background: black;
-  font-family: var(--font-roboto-mono);
-} 
+  font-family: var(--font-roboto-mono) !important;
+}
+
+p {
+  font-family: var(--font-roboto-mono) !important;
+}
 
 @layer utilities {
   .text-balance {

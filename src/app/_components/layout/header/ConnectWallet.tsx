@@ -27,7 +27,7 @@ const ConnectWalletButton = (props: any) => {
     <CommonDropdown
       contentDropdown={
         <>
-          <p
+          <button
             className={twJoin(
               "py-2",
               "w-full",
@@ -36,13 +36,13 @@ const ConnectWalletButton = (props: any) => {
             )}
           >
             My AI-generated NFTs
-          </p>
-          <p
+          </button>
+          <button
             onClick={() => disconnect()}
             className="w-full py-2 text-center cursor-pointer"
           >
             Sign-out
-          </p>
+          </button>
         </>
       }
     >

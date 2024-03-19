@@ -15,7 +15,8 @@ const CommonButton: React.FC<CommonButtonProps> = ({
         return "text-neutral1 border-neutral1";
       case CommonButtonVariantEnum.primary:
         return "bg-primary1 text-black1 border-primary1";
-
+      case CommonButtonVariantEnum.outline:
+        return "bg-neutral2 text-neutral4 border-neutral2";
       default:
         return "";
     }
@@ -27,6 +28,7 @@ const CommonButton: React.FC<CommonButtonProps> = ({
         "border",
         "relative",
         "py-2 pl-4",
+        // "font-roboto",
         isShowArrow ? "pr-8" : "pr-4",
         variantStyle,
         className
@@ -51,4 +53,5 @@ export interface CommonButtonProps extends ComponentPropsWithRef<"button"> {
 export enum CommonButtonVariantEnum {
   default = "default",
   primary = "primary",
+  outline = "outline",
 }

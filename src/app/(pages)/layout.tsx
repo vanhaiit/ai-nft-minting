@@ -1,6 +1,5 @@
 import ThemeConfigProvider from "@/libs/antd/ConfigProvider";
 import { RainBowProviders } from "@/libs/rainbow/providers";
-import { themeConfig } from "@/theme";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import "@rainbow-me/rainbowkit/styles.css";
 import type { Metadata } from "next";
@@ -40,7 +39,7 @@ export default function RootLayout({
         className={twJoin(roboto_mono.variable, space_mono.variable)}
         suppressHydrationWarning={true}
       >
-        <ThemeConfigProvider theme={themeConfig}>
+        <ThemeConfigProvider>
           <ReduxProvider>
             <RainBowProviders>
               <AntdRegistry>
@@ -48,7 +47,7 @@ export default function RootLayout({
                 <div
                   className={twJoin(
                     "flex justify-center",
-                    "font-roboto text-neutral1",
+                    "!font-roboto text-neutral1",
                     "min-h-[calc(100svh-80px)]",
                     "relative w-screen mt-20"
                   )}
