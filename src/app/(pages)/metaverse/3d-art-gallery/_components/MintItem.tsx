@@ -8,6 +8,9 @@ import { ImageAssets } from "../../../../../../public";
 
 import Image from "next/image";
 import MintNftModal from "./MintNftModal";
+import { useAppDispatch, useAppSelector } from "@/libs/redux/store";
+import { getAtpBalance } from "@/stores/app/selectors";
+import { setAtqBalance } from "@/stores/app";
 
 const MintItem: React.FC<MintItemProps> = ({
   isMinted,
@@ -16,7 +19,10 @@ const MintItem: React.FC<MintItemProps> = ({
   onRegenerate,
   ...otherProps
 }) => {
+  const balance = useAppSelector(getAtpBalance);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const dispatch = useAppDispatch();
+  dispatch(setAtqBalance(20000));
 
   return (
     <div
@@ -47,7 +53,7 @@ const MintItem: React.FC<MintItemProps> = ({
           <TypeAnimation
             sequence={["Generating the image..."]}
             wrapper="p"
-            cursor={false}
+            cursor={true}
           />
         </div>
       )}

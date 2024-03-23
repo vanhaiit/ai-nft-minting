@@ -10,7 +10,7 @@ const initialState: BetState = {
 
 // slice
 export const appSlice = createSlice({
-  name: "app",
+  name: "collection",
   initialState,
   reducers: {
     setAtqBalance: (state, actions: PayloadAction<number>) => {
@@ -23,4 +23,4 @@ export const appSlice = createSlice({
 export const { setAtqBalance } = appSlice.actions;
 
 // reducer
-export const appStateReducer = appSlice.reducer;
+export const collectionStateReducer = appSlice.reducer;

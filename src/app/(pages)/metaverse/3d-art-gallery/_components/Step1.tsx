@@ -27,7 +27,7 @@ const Step1: React.FC<Step1Props> = ({ onChangeStep }) => {
                 "Get ready for the imminent mass adoption of artificial intelligence...",
               ]}
               className="!text-white "
-              cursor={false}
+              cursor={true}
             />
           </p>
         </CommonContainer>
@@ -51,7 +51,7 @@ const Step1: React.FC<Step1Props> = ({ onChangeStep }) => {
                  using the latest version of image generative AI model.`,
                 ]}
                 className="!text-white"
-                cursor={false}
+                cursor={true}
               />
             </p>
           </div>

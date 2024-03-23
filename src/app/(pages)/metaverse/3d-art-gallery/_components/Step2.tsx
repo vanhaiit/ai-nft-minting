@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { StepEnum } from "@/types";
 import { twMerge, twJoin } from "tailwind-merge";
 import { TypeAnimation } from "react-type-animation";
-import { ImageAssets } from "../../../../../../../public";
+import { ImageAssets } from "../../../../../../public";
 
-import MintItem from "../MintItem";
-import GenerateFile from "../GenerateFile";
-import GenerateText from "../GenerateText";
+import MintItem from "./MintItem";
+import GenerateFile from "./GenerateFile";
+import GenerateText from "./GenerateText";
 import CommonContainer from "@/app/_components/CommonContainer";
 import CommonButton from "@/app/_components/CommonButton";
-import Regenerate from "../Regenerate";
+import Regenerate from "./Regenerate";
 
 const sequence = [
   "Enter keywords as you want...",
@@ -59,7 +59,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep }) => {
             key={index}
             sequence={[item]}
             wrapper="p"
-            cursor={false}
+            cursor={true}
             className="w-3/4 text-2xl font-bold font-space uppercase"
           />
         ))}

@@ -70,7 +70,7 @@ const Generate = () => {
           <TypeAnimation
             sequence={["There’s no minted NFT yet..."]}
             className="text-space text-2xl font-bold"
-            cursor={false}
+            cursor={true}
           />
           <CommonButton
             className="w-fit"
