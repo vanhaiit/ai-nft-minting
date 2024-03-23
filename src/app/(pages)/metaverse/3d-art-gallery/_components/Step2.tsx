@@ -16,35 +16,33 @@ const sequence = [
   "We will generate and visualize whatever you imagine...",
 ];
 
-const Step2: React.FC<Step2Props> = ({ onChangeStep }) => {
+const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
   const [isReGenerate, setIsReGenerate] = useState(false);
   const [urlReGenerate, setUrlReGenerate] = useState("");
+  const [isShowCardMint, setIsShowCardMint] = useState(false);
+  const [showText2, setShowText2] = useState(false);
 
   const [dataNft1, setDataNft1] = useState({ isMinted: false, urlImage: "" });
   const [dataNft2, setDataNft2] = useState({ isMinted: false, urlImage: "" });
   const [dataNft3, setDataNft3] = useState({ isMinted: false, urlImage: "" });
 
-  useEffect(() => {
-    const setTimeoutNft1 = setTimeout(() => {
+  const handleUpload = () => {
+    setIsShowCardMint(true);
+    setTimeout(() => {
       setDataNft1({ isMinted: false, urlImage: ImageAssets.Demo1Image });
     }, 2000);
-    const setTimeoutNft2 = setTimeout(() => {
+    setTimeout(() => {
       setDataNft2({ isMinted: false, urlImage: ImageAssets.Demo2Image });
     }, 4000);
-    const setTimeoutNft3 = setTimeout(() => {
+    setTimeout(() => {
       setDataNft3({ isMinted: false, urlImage: ImageAssets.Demo3Image });
     }, 6000);
-
-    return () => {
-      clearTimeout(setTimeoutNft1);
-      clearTimeout(setTimeoutNft2);
-      clearTimeout(setTimeoutNft3);
-    };
-  }, []);
+  };
 
   useEffect(() => {
     if (dataNft1.urlImage && dataNft2.urlImage && dataNft3.urlImage) {
       onChangeStep(StepEnum.STEP_3);
+      return;
     }
   }, [dataNft1, dataNft2, dataNft3]);
 
@@ -54,20 +52,29 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep }) => {
         containerClassName="w-full pt-20 pb-6"
         className="justify-center gap-y-8"
       >
-        {sequence.map((item, index) => (
+        <TypeAnimation
+          sequence={["Enter keywords as you want...", () => setShowText2(true)]}
+          wrapper="p"
+          cursor={true}
+          className="w-3/4 text-2xl font-bold font-space uppercase"
+        />
+        {showText2 && (
           <TypeAnimation
-            key={index}
-            sequence={[item]}
+            sequence={[
+              "We will generate and visualize whatever you imagine...",
+            ]}
             wrapper="p"
             cursor={true}
             className="w-3/4 text-2xl font-bold font-space uppercase"
           />
-        ))}
+        )}
         <div className={twJoin("w-full h-full", "flex items-center gap-x-6")}>
           <GenerateText />
           <GenerateFile />
         </div>
-        <CommonButton className="w-fit mx-auto">Upload</CommonButton>
+        <CommonButton className="w-fit mx-auto" onClick={handleUpload}>
+          Upload
+        </CommonButton>
       </CommonContainer>
       <CommonContainer
         containerClassName="border-t py-10"
@@ -79,30 +86,34 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep }) => {
           <Regenerate urlImage={urlReGenerate} />
         ) : (
           <>
-            <MintItem
-              urlImage={dataNft1.urlImage}
-              isMinted={dataNft1.isMinted}
-              onRegenerate={() => {
-                setIsReGenerate(true);
-                setUrlReGenerate(dataNft1.urlImage);
-              }}
-            />
-            <MintItem
-              urlImage={dataNft2.urlImage}
-              isMinted={dataNft2.isMinted}
-              onRegenerate={() => {
-                setIsReGenerate(true);
-                setUrlReGenerate(dataNft2.urlImage);
-              }}
-            />
-            <MintItem
-              urlImage={dataNft3.urlImage}
-              isMinted={dataNft3.isMinted}
-              onRegenerate={() => {
-                setIsReGenerate(true);
-                setUrlReGenerate(dataNft3.urlImage);
-              }}
-            />
+            {isShowCardMint && (
+              <>
+                <MintItem
+                  urlImage={dataNft1.urlImage}
+                  isMinted={dataNft1.isMinted}
+                  onRegenerate={() => {
+                    setIsReGenerate(true);
+                    setUrlReGenerate(dataNft1.urlImage);
+                  }}
+                />
+                <MintItem
+                  urlImage={dataNft2.urlImage}
+                  isMinted={dataNft2.isMinted}
+                  onRegenerate={() => {
+                    setIsReGenerate(true);
+                    setUrlReGenerate(dataNft2.urlImage);
+                  }}
+                />
+                <MintItem
+                  urlImage={dataNft3.urlImage}
+                  isMinted={dataNft3.isMinted}
+                  onRegenerate={() => {
+                    setIsReGenerate(true);
+                    setUrlReGenerate(dataNft3.urlImage);
+                  }}
+                />
+              </>
+            )}
           </>
         )}
       </CommonContainer>
@@ -113,5 +124,6 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep }) => {
 export default Step2;
 
 interface Step2Props {
+  step: StepEnum;
   onChangeStep: (value: StepEnum) => void;
 }

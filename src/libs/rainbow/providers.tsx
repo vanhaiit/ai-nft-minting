@@ -1,27 +1,18 @@
 "use client";
-import * as React from "react";
 import {
   RainbowKitProvider,
-  getDefaultWallets,
   getDefaultConfig,
+  getDefaultWallets,
 } from "@rainbow-me/rainbowkit";
 import {
   argentWallet,
-  trustWallet,
   ledgerWallet,
+  trustWallet,
 } from "@rainbow-me/rainbowkit/wallets";
-import {
-  arbitrum,
-  base,
-  mainnet,
-  optimism,
-  polygon,
-  bsc,
-  sepolia,
-  zora,
-} from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import * as React from "react";
 import { WagmiProvider } from "wagmi";
+import { bsc } from "wagmi/chains";
 
 const { wallets } = getDefaultWallets();
 

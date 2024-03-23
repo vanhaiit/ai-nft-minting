@@ -1,6 +1,7 @@
 "use client";
 import { useWindowSize } from "@/hooks";
 import React, { ComponentPropsWithRef, useEffect, useRef } from "react";
+import { twJoin } from "tailwind-merge";
 import {
   BufferAttribute,
   Clock,
@@ -21,6 +22,7 @@ const WaveAnimation: React.FC<MyThreeJsComponentProps> = ({
   width,
   height,
 }) => {
+  const { windowHeight } = useWindowSize();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const scene = useRef<Scene>(new Scene());
   const camera = useRef<PerspectiveCamera>();
@@ -123,7 +125,15 @@ const WaveAnimation: React.FC<MyThreeJsComponentProps> = ({
     }
   }, [width, height]);
 
-  return <canvas ref={canvasRef} className="webgl -mt-64 -z-50" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className={twJoin(
+        "webgl -z-50",
+        windowHeight >= 1080 ? "-mt-64" : "-mt-40"
+      )}
+    />
+  );
 };
 
 export default WaveAnimation;

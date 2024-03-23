@@ -1,20 +1,17 @@
 "use client";
 
-import React, { ComponentPropsWithoutRef, useState } from "react";
-import { twMerge, twJoin } from "tailwind-merge";
 import { CheckIcon } from "@/app/_components/icon";
+import React, { ComponentPropsWithoutRef, useEffect, useState } from "react";
 import { TypeAnimation } from "react-type-animation";
+import { twJoin, twMerge } from "tailwind-merge";
 import { ImageAssets } from "../../../../../../public";
 
-import Image from "next/image";
-import MintNftModal from "./MintNftModal";
+import { ABI_CONTRACT } from "@/data";
+import { useContract } from "@/hooks/useContract";
 import { useAppDispatch, useAppSelector } from "@/libs/redux/store";
 import { getAtpBalance } from "@/stores/app/selectors";
-import { setAtqBalance } from "@/stores/app";
-import {
-  useCreateTransactionMutation,
-  useGetConfigQuery,
-} from "@/stores/app/api";
+import Image from "next/image";
+import MintNftModal from "./MintNftModal";
 
 const MintItem: React.FC<MintItemProps> = ({
   isMinted,
@@ -27,22 +24,25 @@ const MintItem: React.FC<MintItemProps> = ({
   const [isOpenModal, setIsOpenModal] = useState(false);
   const dispatch = useAppDispatch();
   const [search, setSearch] = useState("");
-  const { data, isLoading } = useGetConfigQuery({ id: "" }, { skip: true });
-  const [createTran, { isLoading: isLoad }] = useCreateTransactionMutation();
-  createTran({});
-  dispatch(setAtqBalance(20000));
+  // const { data, isLoading } = useGetConfigQuery({ id: "" }, { skip: true });
+  // const [createTran, { isLoading: isLoad }] = useCreateTransactionMutation();
+  // createTran({});
+  // dispatch(setAtqBalance(20000));
 
   return (
     <div
       className={twMerge(
         "relative",
+        "container",
         "bg-neutral2",
         "center-root",
         !isMinted && "cursor-pointer",
         "translate-hidden",
         "border-4 border-transparent",
-        "w-full h-full max-w-[424px] max-h-[424px]",
+        "w-full h-full max-w-[424px] max-h-[424px] hover:border-primary1",
         isMinted && "border-primary1 disable",
+        "[&>.button]:hover:bg-primary1 ",
+        "[&~.icon]:hover:block",
         className
       )}
       {...otherProps}
@@ -74,6 +74,7 @@ const MintItem: React.FC<MintItemProps> = ({
       ></button>
       <button
         className={twJoin(
+          "button",
           "py-4",
           "w-full",
           "button",

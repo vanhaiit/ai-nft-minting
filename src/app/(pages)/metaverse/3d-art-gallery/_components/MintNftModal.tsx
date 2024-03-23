@@ -11,15 +11,34 @@ import Image from "next/image";
 import Filter from "../../../generate/_component/Filter";
 import CommonModal from "@/app/_components/CommonModal";
 import CommonInput from "@/app/_components/CommonInput";
+import { useAccount } from "wagmi";
+import { useContract } from "@/hooks/useContract";
+import { ABI_CONTRACT } from "@/data";
 
 const MintNftModal: React.FC<MintNftModalProps> = ({
   open,
   urlImage,
   onCancel,
 }) => {
+  const account = useAccount();
   const [nftCollection, setNftCollection] = useState(1);
   const [nftType, setNftType] = useState(NftTypeEnum.ERC_721);
   const [collection, setCollection] = useState("");
+  const [valueFilter, setValueFilter] = useState("Existing collections");
+
+  const getData = useContract(
+    ABI_CONTRACT,
+    process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!
+  );
+  const onGetNonce = async () => {
+    const res: any = await getData;
+    const nonce = await res?.nonces(account.address);
+  };
+
+  const handleMint = async () => {
+    const nonce = await onGetNonce();
+    console.log("nonce", nonce);
+  };
 
   return (
     <CommonModal open={open} onCancel={onCancel}>
@@ -36,7 +55,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
             </Radio.Group>
             {nftCollection === 1 && (
               <Filter
-                defaultValue="Existing collections"
+                defaultValue={"Existing collections"}
                 value={collection}
                 onChange={(value) => setCollection(value)}
               />
@@ -68,6 +87,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
           variant={CommonButtonVariantEnum.primary}
           isShowArrow={false}
           className="w-fit text-sm"
+          onClick={handleMint}
         >
           Mint
         </CommonButton>

@@ -1,4 +1,5 @@
 "use client";
+import React, { useEffect } from "react";
 import { useWindowSize } from "@/hooks";
 import { TypeAnimation } from "react-type-animation";
 import { twMerge } from "tailwind-merge";
@@ -10,10 +11,26 @@ import WaveAnimation from "@/app/_components/WaveAnimation";
 import { useState } from "react";
 import CommonModal from "@/app/_components/CommonModal";
 import { StepEnum } from "@/types";
+import { debounce } from "lodash";
 
 const Step1: React.FC<Step1Props> = ({ onChangeStep }) => {
   const { windowWidth, windowHeight } = useWindowSize();
   const [isOpen, setIsOpen] = useState(false);
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  const handleResize = debounce(() => {
+    setSize({
+      width: windowWidth,
+      height: windowHeight,
+    });
+  }, 2000);
+
+  useEffect(() => {
+    handleResize();
+  }, [windowWidth, windowHeight]);
 
   return (
     <div className="w-full">
@@ -62,7 +79,7 @@ const Step1: React.FC<Step1Props> = ({ onChangeStep }) => {
             Generate
           </CommonButton>
         </CommonContainer>
-        <WaveAnimation width={windowWidth} height={windowHeight / 2} />
+        <WaveAnimation width={size.width} height={size.height / 2.5} />
       </div>
       <CommonModal open={isOpen} onCancel={() => setIsOpen(false)}>
         <div className="center-root flex-col gap-y-3">

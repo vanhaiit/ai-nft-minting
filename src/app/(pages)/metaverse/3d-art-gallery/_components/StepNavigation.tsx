@@ -2,7 +2,10 @@ import React, { ComponentPropsWithoutRef } from "react";
 import { StepEnum } from "@/types";
 import { twMerge, twJoin } from "tailwind-merge";
 
-const StepNavigation: React.FC<StepNavigationProps> = ({ step }) => {
+const StepNavigation: React.FC<StepNavigationProps> = ({
+  step,
+  onChangeStep,
+}) => {
   return (
     <div
       className={twJoin(
@@ -14,12 +17,15 @@ const StepNavigation: React.FC<StepNavigationProps> = ({ step }) => {
     >
       <StepNavigationItems
         className={twJoin(StepEnum.STEP_1 === step && "bg-neutral1")}
+        onClick={() => onChangeStep(StepEnum.STEP_1)}
       />
       <StepNavigationItems
         className={twJoin(StepEnum.STEP_2 === step && "bg-neutral1")}
+        onClick={() => onChangeStep(StepEnum.STEP_2)}
       />
       <StepNavigationItems
         className={twJoin(StepEnum.STEP_3 === step && "bg-neutral1")}
+        onClick={() => onChangeStep(StepEnum.STEP_3)}
       />
     </div>
   );
@@ -33,7 +39,7 @@ const StepNavigationItems: React.FC<ComponentPropsWithoutRef<"div">> = ({
 }) => {
   return (
     <span
-      className={twMerge("w-full h-1 bg-neutral1/50", className)}
+      className={twMerge("w-full h-1 bg-neutral1/50 cursor-pointer", className)}
       {...otherProps}
     />
   );
@@ -41,4 +47,5 @@ const StepNavigationItems: React.FC<ComponentPropsWithoutRef<"div">> = ({
 
 interface StepNavigationProps {
   step: StepEnum;
+  onChangeStep: (value: StepEnum) => void;
 }

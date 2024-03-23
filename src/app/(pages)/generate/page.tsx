@@ -17,6 +17,9 @@ import { ImageAssets } from "../../../../public";
 const Generate = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [valueFilter, setValueFilter] = useState("Filters");
+  const [showText2, setShowText2] = useState(false);
+  const [showText3, setShowText3] = useState(false);
+  const [showText4, setShowText4] = useState(false);
 
   const dataShow = useMemo(() => {
     return MOCK_DATA_LIST_NFT.slice(currentPage * 8 - 8, currentPage * 8);
@@ -31,14 +34,45 @@ const Generate = () => {
     >
       {MOCK_DATA_LIST_NFT.length > 0 ? (
         <>
-          <div className="flex flex-col font-space text-2xl">
-            <p>Here are NFTs that you minted...</p>
+          <div className="flex flex-col font-space text-2xl min-h-16">
+            <TypeAnimation
+              sequence={[
+                "Here are NFTs that you minted...",
+                () => setShowText2(true),
+              ]}
+              wrapper="p"
+              cursor={false}
+            />
+
             <span className="flex items-center">
-              It seems you minted totally
-              <p className="text-primary1 mx-3">
-                {MOCK_DATA_LIST_NFT.length}
-              </p>{" "}
-              AI generated NFTs..
+              {showText2 && (
+                <TypeAnimation
+                  sequence={[
+                    "It seems you minted totally",
+                    () => setShowText3(true),
+                  ]}
+                  wrapper="p"
+                  cursor={false}
+                />
+              )}
+              {showText3 && (
+                <TypeAnimation
+                  sequence={[
+                    `${MOCK_DATA_LIST_NFT.length}`,
+                    () => setShowText4(true),
+                  ]}
+                  wrapper="p"
+                  cursor={false}
+                  className="text-primary1 mx-4"
+                />
+              )}
+              {showText3 && (
+                <TypeAnimation
+                  sequence={["AI generated NFTs.."]}
+                  wrapper="p"
+                  cursor={false}
+                />
+              )}
             </span>
           </div>
           <div className="space-between-root">
