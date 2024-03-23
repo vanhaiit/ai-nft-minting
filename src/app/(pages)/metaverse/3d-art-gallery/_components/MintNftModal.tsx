@@ -14,7 +14,12 @@ import CommonInput from "@/app/_components/CommonInput";
 import { useAccount } from "wagmi";
 import { useContract } from "@/hooks/useContract";
 import { ABI_CONTRACT } from "@/data";
-import { useLazyGetSignatureQuery } from "@/stores/collection/api";
+import {
+  useCreateCollectionDraftMutation,
+  useLazyGetDetailCollectionQuery,
+  useLazyGetSignatureQuery,
+} from "@/stores/collection/api";
+import { retryCallPromise } from "@/helpers";
 
 const MintNftModal: React.FC<MintNftModalProps> = ({
   open,
@@ -27,6 +32,8 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
   const [collection, setCollection] = useState("");
   const [valueFilter, setValueFilter] = useState("Existing collections");
   const [getSignature] = useLazyGetSignatureQuery();
+  const [createCollectionDraft] = useCreateCollectionDraftMutation();
+  const [getDetailCollection] = useLazyGetDetailCollectionQuery();
 
   const getContract = useContract(
     ABI_CONTRACT,
@@ -44,10 +51,13 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
 
   const onCreateCollection = async (nonce: string) => {
     try {
+      const randomNameCollection = `Alpha Quark ${Math.floor(
+        Math.random() * 100000
+      )} NFTs`;
       const res = await getSignature({
         walletAddress: account.address,
         type: nftType,
-        name: "name collection",
+        name: randomNameCollection,
         symbol: "AI",
         nonce,
         baseURI: "AI",
@@ -64,43 +74,82 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
     }
   };
 
-  const onCreateCollectionOnChain = async (
-    baseUri: string,
-    isPublicMintable: boolean,
-    nonce: number,
-    deadline: number,
-    signature: string
-  ) => {
+  const onCreateCollectionOnChain = async (params: any) => {
     try {
-      const contract: any = await getContract;
-      const res = await contract?.createERC1155Contract(
-        account.address,
-        baseUri,
+      const {
+        symbol,
         isPublicMintable,
-        nonce,
+        name,
+        signature,
         deadline,
-        signature
-      );
+        baseURI,
+        nonce,
+      } = params;
+
+      const contract: any = await getContract;
+      let res;
+      if (nftType === NftTypeEnum.ERC_1155) {
+        res = await contract?.createERC1155Contract(
+          account.address,
+          baseURI,
+          isPublicMintable,
+          nonce,
+          deadline,
+          signature
+        );
+      } else {
+        res = await contract?.createERC721Contract(
+          account.address,
+          name,
+          symbol,
+          isPublicMintable,
+          nonce,
+          deadline,
+          signature
+        );
+      }
       console.log("res", res);
+
+      onCreateCollectionDraft(name, res.hash);
     } catch (error) {
       console.log("error", error);
+      return {};
     }
   };
 
+  async function onCreateCollectionDraft(
+    name: string,
+    transactionHash: string
+  ) {
+    const res: any = await createCollectionDraft({
+      name: name,
+      description: "string",
+      type: nftType,
+      transactionHash: transactionHash,
+      walletAddress: account.address,
+    });
+
+    await onGetDetailCollection(res.data.id);
+    // return res.data.data.id;
+  }
+
+  async function onGetDetailCollection(id: string) {
+    const res = await retryCallPromise(
+      () => getDetailCollection({ id }),
+      (res) => res.data.status === "deployed",
+      1000,
+      2000
+    );
+    console.log(res);
+  }
+
   const handleMint = async () => {
     const nonce = await onGetNonce();
-    console.log("nonce", nonce);
 
-    const { symbol, isPublicMintable, name, signature, deadline } =
-      await onCreateCollection(nonce);
-    if (symbol) {
-      await onCreateCollectionOnChain(
-        symbol,
-        isPublicMintable,
-        nonce,
-        deadline,
-        signature
-      );
+    const res = await onCreateCollection(nonce);
+
+    if (res.signature) {
+      await onCreateCollectionOnChain({ ...res });
     }
   };
 

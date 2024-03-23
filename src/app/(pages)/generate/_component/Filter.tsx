@@ -1,8 +1,11 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { NextIcon } from "@/app/_components/icon";
 import { Select, SelectProps } from "antd";
 
 const Filter: React.FC<FilterProps> = ({ defaultValue, ...otherProps }) => {
+  const onGetAllCollection = async () => {};
+
+  useEffect(() => {}, []);
   return MOCK_LIST_COLLECTION.length > 0 ? (
     <Select
       defaultValue={defaultValue}

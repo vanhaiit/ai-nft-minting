@@ -2,10 +2,12 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export type BetState = {
   atqBalance: number;
+  allCollection: string[];
 };
 
 const initialState: BetState = {
   atqBalance: 0,
+  allCollection: [],
 };
 
 // slice
@@ -15,6 +17,9 @@ export const appSlice = createSlice({
   reducers: {
     setAtqBalance: (state, actions: PayloadAction<number>) => {
       state.atqBalance = actions.payload;
+    },
+    setAllCollection: (state, actions: PayloadAction<string[]>) => {
+      state.allCollection = actions.payload;
     },
   },
 });

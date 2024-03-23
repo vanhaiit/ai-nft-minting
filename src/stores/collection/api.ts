@@ -12,7 +12,43 @@ export const profileApi = baseQueryApi.injectEndpoints({
         };
       },
     }),
+
+    getDetailCollection: build.query<any, any>({
+      query: (params: any) => {
+        return {
+          url: `events/${params.id}`,
+          method: "GET",
+        };
+      },
+    }),
+
+    getAllCollection: build.query<any, any>({
+      query: (params: any) => {
+        const paramsString = queryString.stringify({ ...params });
+        return {
+          url: `events?${paramsString}`,
+          method: "GET",
+        };
+      },
+    }),
+
+    createCollectionDraft: build.mutation<any, any>({
+      query: (params: any) => {
+        return {
+          url: `events`,
+          method: "POST",
+          body: params,
+        };
+      },
+      transformResponse(baseQueryReturnValue: any) {
+        return baseQueryReturnValue.data;
+      },
+    }),
   }),
 });
 
-export const { useLazyGetSignatureQuery } = profileApi;
+export const {
+  useLazyGetSignatureQuery,
+  useCreateCollectionDraftMutation,
+  useLazyGetDetailCollectionQuery,
+} = profileApi;
