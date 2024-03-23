@@ -16,6 +16,7 @@ import {
   mainnet,
   optimism,
   polygon,
+  bsc,
   sepolia,
   zora,
 } from "wagmi/chains";
@@ -35,13 +36,8 @@ const config = getDefaultConfig({
     },
   ],
   chains: [
-    mainnet,
-    polygon,
-    optimism,
-    arbitrum,
-    base,
-    zora,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [sepolia] : []),
+    bsc,
+    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [bsc] : []),
   ],
   ssr: true,
 });
