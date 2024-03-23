@@ -56,19 +56,21 @@ const ArtGallery = () => {
       )}
       <StepNavigation step={step} onChangeStep={(value) => setStep(value)} />
 
-      <CommonModal open={isOpenModal} onCancel={() => setIsOpenModal(false)}>
-        <div className="flex flex-col gap-y-6 items-center">
-          {contentModal}
-          <CommonButton
-            variant={CommonButtonVariantEnum.primary}
-            isShowArrow={false}
-            className="w-fit text-sm"
-            onClick={() => setIsOpenModal(false)}
-          >
-            I got it
-          </CommonButton>
-        </div>
-      </CommonModal>
+      {account.address && (
+        <CommonModal open={isOpenModal} onCancel={() => setIsOpenModal(false)}>
+          <div className="flex flex-col gap-y-6 items-center">
+            {contentModal}
+            <CommonButton
+              variant={CommonButtonVariantEnum.primary}
+              isShowArrow={false}
+              className="w-fit text-sm"
+              onClick={() => setIsOpenModal(false)}
+            >
+              I got it
+            </CommonButton>
+          </div>
+        </CommonModal>
+      )}
     </>
   );
 };
