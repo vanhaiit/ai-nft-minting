@@ -11,6 +11,10 @@ import MintNftModal from "./MintNftModal";
 import { useAppDispatch, useAppSelector } from "@/libs/redux/store";
 import { getAtpBalance } from "@/stores/app/selectors";
 import { setAtqBalance } from "@/stores/app";
+import {
+  useCreateTransactionMutation,
+  useGetConfigQuery,
+} from "@/stores/app/api";
 
 const MintItem: React.FC<MintItemProps> = ({
   isMinted,
@@ -22,6 +26,10 @@ const MintItem: React.FC<MintItemProps> = ({
   const balance = useAppSelector(getAtpBalance);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const dispatch = useAppDispatch();
+  const [search, setSearch] = useState("");
+  const { data, isLoading } = useGetConfigQuery({ id: "" }, { skip: true });
+  const [createTran, { isLoading: isLoad }] = useCreateTransactionMutation();
+  createTran({});
   dispatch(setAtqBalance(20000));
 
   return (
