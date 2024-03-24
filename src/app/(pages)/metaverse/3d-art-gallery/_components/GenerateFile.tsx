@@ -4,7 +4,7 @@ import React, { ChangeEvent, useState } from "react";
 import { twJoin } from "tailwind-merge";
 import { ArrowIcon, FileIcon } from "@/app/_components/icon";
 
-const GenerateFile = () => {
+const GenerateFile: React.FC<GenerateFileProp> = ({ onChangeSelectFile }) => {
   const [listFileName, setListFileName] = useState<string[]>([]);
   const [currentFile, setCurrentFile] = useState<string | ArrayBuffer>("");
 
@@ -13,15 +13,7 @@ const GenerateFile = () => {
       const newList = [...listFileName];
       newList.push(event.target.files[0].name);
       setListFileName(newList);
-
-      const reader = new FileReader();
-      reader.onload = function () {
-        const base64 = reader.result;
-        if (base64) {
-          setCurrentFile(base64);
-        }
-      };
-      reader.readAsDataURL(event.target.files[0]);
+      onChangeSelectFile(event.target.files[0]);
     }
   };
 
@@ -70,4 +62,6 @@ const GenerateFile = () => {
 
 export default GenerateFile;
 
-// info.file.name;
+interface GenerateFileProp {
+  onChangeSelectFile: (value: File) => void;
+}

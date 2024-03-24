@@ -27,8 +27,6 @@ export const useContract = <T extends BaseContract>(
       ? new Web3Provider((await connector?.getProvider?.()) as ExternalProvider)
       : null;
 
-    console.log(11111, provider?.getSigner());
-
     return getContract<T>(abi, address, provider?.getSigner());
   }, [abi, address, connector]);
 };

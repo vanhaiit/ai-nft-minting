@@ -1,12 +1,30 @@
 import React, { Fragment, useEffect } from "react";
 import { NextIcon } from "@/app/_components/icon";
 import { Select, SelectProps } from "antd";
+import { useGetAllCollectionQuery } from "@/stores/collection/api";
+import { useAccount } from "wagmi";
 
-const Filter: React.FC<FilterProps> = ({ defaultValue, ...otherProps }) => {
-  const onGetAllCollection = async () => {};
+const Filter: React.FC<FilterProps> = ({
+  defaultValue,
+  onInitValue,
+  ...otherProps
+}) => {
+  const account = useAccount();
+  const { data } = useGetAllCollectionQuery(
+    {
+      walletAddress: account?.address,
+      status: ["deployed"],
+    },
+    { skip: !account.address }
+  ) as any;
 
-  useEffect(() => {}, []);
-  return MOCK_LIST_COLLECTION.length > 0 ? (
+  useEffect(() => {
+    if (data?.length > 0) {
+      onInitValue?.(`${data[0].contract.address}_${data[0].id}`);
+    }
+  }, [data]);
+
+  return data?.length > 0 ? (
     <Select
       defaultValue={defaultValue}
       style={{
@@ -14,8 +32,11 @@ const Filter: React.FC<FilterProps> = ({ defaultValue, ...otherProps }) => {
         background: "rgb(0,0,0,0)",
         color: "#FFFFFF",
       }}
-      options={MOCK_LIST_COLLECTION.map((item) => {
-        return { value: item, label: item };
+      options={data?.map((item: any) => {
+        return {
+          value: `${item.contract.address}_${item.id}`,
+          label: item.name,
+        };
       })}
       dropdownStyle={{
         border: "1px solid #FFFFFF",
@@ -36,17 +57,5 @@ export default Filter;
 interface FilterProps extends SelectProps {
   defaultValue: string;
   value: string;
+  onInitValue?: (value: any) => void;
 }
-
-export const MOCK_LIST_COLLECTION = [
-  "Alpha Quark 1 NFTs",
-  "Alpha Quark 2 NFTs",
-  "BAYC AI-generated",
-  "Alpha Quark 3 NFTs",
-  "Alpha Quark 4 NFTs",
-  "Alpha Quark 5 NFTs",
-  "Alpha Quark 6 NFTs",
-  "Alpha Quark 7 NFTs",
-  "Alpha Quark 8 NFTs",
-  "Alpha Quark 9 NFTs",
-];

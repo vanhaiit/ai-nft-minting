@@ -20,15 +20,24 @@ export const profileApi = baseQueryApi.injectEndpoints({
           method: "GET",
         };
       },
+      transformResponse(baseQueryReturnValue: any) {
+        return baseQueryReturnValue.data;
+      },
     }),
 
     getAllCollection: build.query<any, any>({
       query: (params: any) => {
         const paramsString = queryString.stringify({ ...params });
+
+        console.log("paramsString", paramsString);
+
         return {
           url: `events?${paramsString}`,
           method: "GET",
         };
+      },
+      transformResponse(baseQueryReturnValue: any) {
+        return baseQueryReturnValue?.data || [];
       },
     }),
 
@@ -51,4 +60,5 @@ export const {
   useLazyGetSignatureQuery,
   useCreateCollectionDraftMutation,
   useLazyGetDetailCollectionQuery,
+  useGetAllCollectionQuery,
 } = profileApi;

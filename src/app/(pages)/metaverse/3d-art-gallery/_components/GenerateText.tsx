@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { twJoin } from "tailwind-merge";
 import { ArrowIcon } from "@/app/_components/icon";
 
-const GenerateText = () => {
-  const [value, setValue] = useState("");
-
+const GenerateText: React.FC<GenerateTextProps> = ({
+  valueText,
+  onChangeValueText,
+  onGenerateTextToImg,
+}) => {
   return (
     <div
       className={twJoin(
@@ -19,15 +21,17 @@ const GenerateText = () => {
         style={{ resize: "none" }}
         placeholder="A beautiful forest and futuristic city where there are a lot of
               artistic buildings."
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => onChangeValueText(e.target.value)}
       >
-        {value}
+        {valueText}
       </textarea>
       <button
         className={twJoin(
           "flex items-center gap-x-1 ml-auto text-sm text-neutral4",
-          value && "text-primary1"
+          valueText && "text-primary1"
         )}
+        onClick={onGenerateTextToImg}
+        disabled={!valueText}
       >
         Generate
         <ArrowIcon />
@@ -37,3 +41,10 @@ const GenerateText = () => {
 };
 
 export default GenerateText;
+
+interface GenerateTextProps {
+  valueText: string;
+  onChangeValueText: (value: string) => void;
+
+  onGenerateTextToImg: () => void;
+}

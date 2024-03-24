@@ -25,6 +25,7 @@ const baseQuery = fetchBaseQuery({
     headers.set("country", encodeURI(Cookies.get("country")!));
     headers.set("city", encodeURI(Cookies.get("city")!));
     headers.set("cache-control", "no-cache");
+    headers.set("time", new Date().getTime().toString());
     // const token = (getState() as RootState).user.accessToken;
     // if (!!token && endpoint !== "refresh") {
     //   headers.set("Authorization", `Bearer ${token}`);

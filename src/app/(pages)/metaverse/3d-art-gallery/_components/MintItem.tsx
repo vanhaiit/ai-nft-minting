@@ -1,33 +1,77 @@
 "use client";
 
-import { CheckIcon } from "@/app/_components/icon";
 import React, { ComponentPropsWithoutRef, useEffect, useState } from "react";
+import { CheckIcon } from "@/app/_components/icon";
 import { TypeAnimation } from "react-type-animation";
 import { twJoin, twMerge } from "tailwind-merge";
 import { ImageAssets } from "../../../../../../public";
 
-import { ABI_CONTRACT } from "@/data";
-import { useContract } from "@/hooks/useContract";
 import { useAppDispatch, useAppSelector } from "@/libs/redux/store";
 import { getAtpBalance } from "@/stores/app/selectors";
 import Image from "next/image";
 import MintNftModal from "./MintNftModal";
+import { fetchGenerateAiImage, fetchGenerateTextToImage } from "@/helpers";
+import CommonModal from "@/app/_components/CommonModal";
+import CommonButton, {
+  CommonButtonVariantEnum,
+} from "@/app/_components/CommonButton";
 
 const MintItem: React.FC<MintItemProps> = ({
-  isMinted,
-  urlImage,
+  valueText,
+  valueFile,
   className,
+  isGenerateTextToImage,
+  isUploadGenerateAiImg,
   onRegenerate,
   ...otherProps
 }) => {
-  const balance = useAppSelector(getAtpBalance);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const dispatch = useAppDispatch();
-  const [search, setSearch] = useState("");
-  // const { data, isLoading } = useGetConfigQuery({ id: "" }, { skip: true });
-  // const [createTran, { isLoading: isLoad }] = useCreateTransactionMutation();
-  // createTran({});
-  // dispatch(setAtqBalance(20000));
+  const [isMinted, setIsMinted] = useState(false);
+  const [isGenerateImageError, setIsGenerateImageError] = useState(false);
+  const [isOpenModalSuccess, setIsOpenModalSuccess] = useState(false);
+  const [isOpenModalError, setIsOpenModalError] = useState(false);
+  const [isOpenModalMinting, setIsOpenModalMinting] = useState(false);
+
+  const [dataImg, setDataImg] = useState<any>({
+    dataImg: undefined,
+    urlImage: "",
+  });
+
+  const onGenerateTextToImage = async () => {
+    const res = await fetchGenerateTextToImage({
+      input: valueText,
+    });
+    if (res.dataImg) {
+      setDataImg(res);
+    } else {
+      setIsGenerateImageError(true);
+    }
+  };
+
+  const onUploadGenerateAiImg = async () => {
+    let bodyData = new FormData();
+    bodyData.append("file", valueFile);
+    bodyData.append("input", valueText);
+    const res = await fetchGenerateAiImage(bodyData);
+
+    if (res.dataImg) {
+      setDataImg(res);
+    } else {
+      setIsGenerateImageError(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!valueText || valueFile) return;
+
+    onGenerateTextToImage();
+  }, [isGenerateTextToImage]);
+
+  useEffect(() => {
+    if (!valueFile || !valueText) return;
+
+    onUploadGenerateAiImg();
+  }, [isUploadGenerateAiImg]);
 
   return (
     <div
@@ -47,30 +91,46 @@ const MintItem: React.FC<MintItemProps> = ({
       )}
       {...otherProps}
     >
-      {urlImage ? (
-        <Image src={urlImage} alt="" className="w-full h-full" />
+      {dataImg?.dataImg ? (
+        <Image
+          src={dataImg.urlImage}
+          width={100}
+          height={100}
+          alt=""
+          className="w-full h-full"
+        />
       ) : (
         <div className="w-full h-[408px] flex flex-col center-root gap-y-2">
-          <Image
-            src={ImageAssets.LoadingImage}
-            alt=""
-            width={64}
-            height={64}
-            className="animate-spin"
-          />
-          <TypeAnimation
-            sequence={["Generating the image..."]}
-            wrapper="p"
-            cursor={true}
-          />
+          {isGenerateImageError ? (
+            <TypeAnimation
+              sequence={["Generate Ai Image Error"]}
+              wrapper="p"
+              cursor={true}
+            />
+          ) : (
+            <>
+              <Image
+                src={ImageAssets.LoadingImage}
+                alt=""
+                width={64}
+                height={64}
+                className="animate-spin"
+              />
+              <TypeAnimation
+                sequence={["Generating the image..."]}
+                wrapper="p"
+                cursor={true}
+              />
+            </>
+          )}
         </div>
       )}
       <button
         className={twJoin(
           "h-[calc(100%-56px)] w-full absolute top-0 left-0 opacity-0"
         )}
-        disabled={isMinted}
-        onClick={onRegenerate}
+        disabled={isMinted || isGenerateImageError || !dataImg.dataImg}
+        onClick={() => onRegenerate(dataImg)}
       ></button>
       <button
         className={twJoin(
@@ -83,7 +143,7 @@ const MintItem: React.FC<MintItemProps> = ({
           "absolute bottom-0 left-0"
         )}
         onClick={() => setIsOpenModal(true)}
-        disabled={isMinted}
+        disabled={isMinted || isGenerateImageError || !dataImg.dataImg}
       >
         {isMinted && <CheckIcon className={twJoin("icon", "text-black1")} />}
         Mint
@@ -91,8 +151,64 @@ const MintItem: React.FC<MintItemProps> = ({
       <MintNftModal
         open={isOpenModal}
         onCancel={() => setIsOpenModal(false)}
-        urlImage={urlImage}
+        dataImg={dataImg}
+        onMindError={() => {
+          setIsOpenModalMinting(false);
+          setIsOpenModalError(true);
+        }}
+        onMindSuccess={() => {
+          setIsOpenModalMinting(false);
+          setIsOpenModalSuccess(true);
+          setIsMinted(true);
+        }}
+        onMinting={() => setIsOpenModalMinting(true)}
       />
+      <CommonModal open={isOpenModalSuccess}>
+        <div className="flex flex-col items-center gap-y-4">
+          <p className="w-full text-center">Successfully minted!</p>
+          <CommonButton
+            variant={CommonButtonVariantEnum.primary}
+            isShowArrow={false}
+            onClick={() => {
+              setIsOpenModalSuccess(false);
+              setIsOpenModal(false);
+            }}
+          >
+            OK
+          </CommonButton>
+        </div>
+      </CommonModal>
+      <CommonModal open={isOpenModalError}>
+        <div className="flex flex-col items-center gap-y-4">
+          <p className="w-full text-center">
+            Something went wrong! Please try again.
+          </p>
+          <CommonButton
+            variant={CommonButtonVariantEnum.primary}
+            isShowArrow={false}
+            onClick={() => {
+              setIsOpenModalError(false);
+              setIsOpenModal(false);
+            }}
+          >
+            OK
+          </CommonButton>
+        </div>
+      </CommonModal>
+      <CommonModal open={isOpenModalMinting}>
+        <div className="flex flex-col gap-y-6 items-center">
+          <p className="w-full text-center">
+            Please wait until your NFT minting transaction is completed
+          </p>
+          <Image
+            src={ImageAssets.LoadingImage}
+            alt=""
+            width={64}
+            height={64}
+            className="animate-spin"
+          />
+        </div>
+      </CommonModal>
     </div>
   );
 };
@@ -100,8 +216,9 @@ const MintItem: React.FC<MintItemProps> = ({
 export default MintItem;
 
 interface MintItemProps extends ComponentPropsWithoutRef<"div"> {
-  isMinted: boolean;
-  urlImage: string;
-
-  onRegenerate: () => void;
+  valueText: string;
+  valueFile: any;
+  isGenerateTextToImage: boolean;
+  isUploadGenerateAiImg: boolean;
+  onRegenerate: (value: any) => void;
 }
