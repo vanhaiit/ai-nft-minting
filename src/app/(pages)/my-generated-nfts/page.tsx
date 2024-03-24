@@ -15,6 +15,8 @@ import Navigation from "./_component/Navigation";
 import { useLazyGetAllNftQuery } from "@/stores/nft/api";
 import { useAccount } from "wagmi";
 import DetailNftModal from "./_component/DetailNftModal";
+import Link from "next/link";
+import { ART_GALLERY } from "@/constants";
 
 const Generate = () => {
   const account = useAccount();
@@ -24,8 +26,8 @@ const Generate = () => {
   const [showText2, setShowText2] = useState(false);
   const [showText3, setShowText3] = useState(false);
   const [showText4, setShowText4] = useState(false);
-  const [getAllNft, { isFetching }] = useLazyGetAllNftQuery();
-  const [allNft, setAllNft] = useState<any>();
+  const [getAllNft, { isFetching, isLoading }] = useLazyGetAllNftQuery();
+  const [allNft, setAllNft] = useState<any>([]);
   const [totalPage, setTotalPage] = useState<any>({ totalPage: 0, total: 0 });
   const [hasNft, setHasNft] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -64,7 +66,7 @@ const Generate = () => {
         !hasNft && "center-root "
       )}
     >
-      {hasNft ? (
+      {allNft.length > 0 && !isLoading && (
         <>
           <div className="flex flex-col font-space text-2xl min-h-16">
             <TypeAnimation
@@ -140,23 +142,23 @@ const Generate = () => {
             />
           )}
         </>
-      ) : (
-        <div className="h-full flex-col gap-y-2 center-root">
+      )}
+      {allNft.length === 0 && !isFetching && (
+        <div className="h-full flex-col gap-y-[24px] center-root">
           <TypeAnimation
             sequence={["There’s no minted NFT yet..."]}
             wrapper="p"
             cursor={false}
-            className="text-space text-2xl font-bold"
+            className="text-space text-2xl text-white !text-[24px] font-bold"
             key={1}
           />
 
-          <CommonButton
-            className="w-fit"
-            variant={CommonButtonVariantEnum.outline}
-            isShowArrow={false}
+          <Link
+            className="w-fit !w-[96px] !h-[32px] bg-neutral2 text-center flex justify-center items-center text-neutral6"
+            href={ART_GALLERY}
           >
             Generate
-          </CommonButton>
+          </Link>
         </div>
       )}
       {detailData && (

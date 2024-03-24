@@ -17,33 +17,39 @@ const ArtGallery = () => {
   const balance = useAppSelector(getAtpBalance);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [step, setStep] = useState<StepEnum>(StepEnum.STEP_1);
-  const [contentModal, setContentModal] = useState<ReactNode>();
+  const [contentModal, setContentModal] = useState<any>();
 
   useEffect(() => {
     setIsOpenModal(true);
     if (!account.address) return setContentModal(<Fragment />);
     if (balance < 50) {
-      setContentModal(
-        <div className="flex flex-col items-center gap-y-4">
-          <p className="text-xl font-medium">Oops,</p>
-          <span>
-            It seems that do not hold any Alpha Quark Token yet. If you hold{" "}
-            <p className="text-primary1 inline-block">50 AQT</p> on your wallet,
-            then you can use the latest version of AI model to generate images
-            freely!
-          </span>
-        </div>
-      );
+      setContentModal({
+        class: "!w-[605px]",
+        content: (
+          <div className="flex flex-col items-center gap-y-4 text-center">
+            <p className="text-[20px] font-medium">Oops,</p>
+            <span className="text-[16px]">
+              It seems that do not hold any Alpha Quark Token yet. If you hold{" "}
+              <p className="text-primary1 inline-block">50 AQT</p> on your
+              wallet, then you can use the latest version of AI model to
+              generate images freely!
+            </span>
+          </div>
+        ),
+      });
     } else {
-      setContentModal(
-        <div className="flex flex-col items-center gap-y-4">
-          <p className="text-xl font-medium">Congrats!</p>
-          <p>
-            It seems that you’re already an Alpha Quark Token holder! You can
-            use the latest version of AI model to generate images!{" "}
-          </p>
-        </div>
-      );
+      setContentModal({
+        class: "!w-[605px]",
+        content: (
+          <div className="flex flex-col items-center gap-y-4">
+            <p className="text-[20px] font-medium">Congrats!</p>
+            <p className="text-[16px]">
+              It seems that you’re already an Alpha Quark Token holder! You can
+              use the latest version of AI model to generate images!{" "}
+            </p>
+          </div>
+        ),
+      });
     }
   }, [balance, account.address]);
 
@@ -57,11 +63,15 @@ const ArtGallery = () => {
       <StepNavigation step={step} onChangeStep={(value) => setStep(value)} />
 
       {account.address && (
-        <CommonModal open={isOpenModal} onCancel={() => setIsOpenModal(false)}>
+        <CommonModal
+          className={contentModal?.class}
+          open={isOpenModal}
+          onCancel={() => setIsOpenModal(false)}
+        >
           <div className="flex flex-col gap-y-6 items-center">
-            {contentModal}
+            {contentModal?.content}
             <CommonButton
-              variant={CommonButtonVariantEnum.primary}
+              variant={CommonButtonVariantEnum.outline}
               isShowArrow={false}
               className="w-fit text-sm"
               onClick={() => setIsOpenModal(false)}

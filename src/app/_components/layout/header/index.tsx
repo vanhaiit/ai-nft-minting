@@ -3,6 +3,7 @@ import { twJoin } from "tailwind-merge";
 import { ImageAssets } from "../../../../../public";
 import ConnectWallet from "./ConnectWallet";
 import DesktopNavigation from "./DesktopNavigation";
+import Link from "next/link";
 
 const MainLayoutHeader = () => {
   return (
@@ -10,7 +11,7 @@ const MainLayoutHeader = () => {
       className={twJoin(
         "bg-black1",
         "h-20 w-full",
-        "fixed z-10 top-0 border-b"
+        "fixed z-10 top-0 border-b z-30"
       )}
     >
       <div
@@ -19,7 +20,9 @@ const MainLayoutHeader = () => {
           "space-between-root"
         )}
       >
-        <Image src={ImageAssets.LogoImage} alt="" />
+        <Link href={"/"}>
+          <Image src={ImageAssets.LogoImage} alt="" />
+        </Link>
         <DesktopNavigation />
         <ConnectWallet />
       </div>

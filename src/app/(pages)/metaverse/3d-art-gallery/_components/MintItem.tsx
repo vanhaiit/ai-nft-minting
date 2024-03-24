@@ -91,7 +91,7 @@ const MintItem: React.FC<MintItemProps> = ({
         !isMinted && "cursor-pointer",
         "translate-hidden",
         "border-4 border-transparent",
-        "w-full h-full max-w-[424px] max-h-[424px] hover:border-primary1",
+        "w-full h-full max-w-[420px] max-h-[420px] hover:border-primary1",
         isMinted && "border-primary1 disable",
         "[&>.button]:hover:bg-primary1 ",
         "[&~.icon]:hover:block",

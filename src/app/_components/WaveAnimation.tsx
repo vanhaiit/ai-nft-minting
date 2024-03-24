@@ -1,6 +1,6 @@
 "use client";
 import { useWindowSize } from "@/hooks";
-import React, { ComponentPropsWithRef, useEffect, useRef } from "react";
+import React, { ComponentPropsWithRef, memo, useEffect, useRef } from "react";
 import { twJoin } from "tailwind-merge";
 import {
   BufferAttribute,
@@ -136,4 +136,4 @@ const WaveAnimation: React.FC<MyThreeJsComponentProps> = ({
   );
 };
 
-export default WaveAnimation;
+export default memo(WaveAnimation);

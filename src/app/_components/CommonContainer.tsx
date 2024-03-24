@@ -11,7 +11,7 @@ const CommonContainer: React.FC<PageProps> = ({
     <div className={twMerge("w-full", containerClassName)} {...otherProps}>
       <div
         className={twMerge(
-          "w-full max-w-[1300px]",
+          "w-full max-w-[1320px]",
           "mx-auto",
           "flex flex-col",
           className

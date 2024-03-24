@@ -9,6 +9,7 @@ import GenerateText from "./GenerateText";
 import CommonContainer from "@/app/_components/CommonContainer";
 import CommonButton from "@/app/_components/CommonButton";
 import Regenerate from "./Regenerate";
+import WaveAnimation from "@/app/_components/WaveAnimation";
 
 const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
   const [isReGenerate, setIsReGenerate] = useState(false);
@@ -20,6 +21,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
   const [isUploadGenerateAiImg, setIsUploadGenerateAiImg] = useState(false);
   const [fileValue, setFileValue] = useState<File>();
   const [reGenerateData, setReGenerateData] = useState<any>();
+  const [start, setStart] = useState<any>(false);
 
   const [dataNft1, setDataNft1] = useState({ isMinted: false, urlImage: "" });
   const [dataNft2, setDataNft2] = useState({ isMinted: false, urlImage: "" });
@@ -35,10 +37,10 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
   return (
     <div className={twMerge("w-full h-full", "flex flex-col ")}>
       <CommonContainer
-        containerClassName="w-full pt-20 pb-6"
+        containerClassName="w-full pt-20 pb-6 z-10"
         className="justify-center gap-y-8"
       >
-        <div className="flex flex-col gap-y-8 min-h-24">
+        <div className="flex flex-col justify-between !h-[72px]">
           <TypeAnimation
             sequence={[
               "Enter keywords as you want...",
@@ -46,7 +48,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
             ]}
             wrapper="p"
             cursor={false}
-            className="w-3/4 text-2xl font-bold font-space uppercase"
+            className="w-3/4 text-[24px] font-bold font-space "
           />
           {showText2 && (
             <TypeAnimation
@@ -55,7 +57,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
               ]}
               wrapper="p"
               cursor={false}
-              className="w-3/4 text-2xl font-bold font-space uppercase"
+              className="w-3/4 text-[24px] font-bold font-space "
             />
           )}
         </div>
@@ -66,6 +68,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
             onGenerateTextToImg={() => {
               setIsShowCardMint(true);
               setIsGenerateTextToImage(!isGenerateTextToImage);
+              setStart(true);
             }}
           />
           <GenerateFile onChangeSelectFile={(value) => setFileValue(value)} />
@@ -75,6 +78,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
           onClick={() => {
             setIsShowCardMint(true);
             setIsUploadGenerateAiImg(!isUploadGenerateAiImg);
+            setStart(true);
           }}
           disabled={!valueText || !fileValue}
         >
@@ -131,6 +135,11 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
           </>
         )}
       </CommonContainer>
+      {!start && (
+        <div className="absolute bottom-0 z-0 w-full flex justify-center items-center">
+          <WaveAnimation width={1920} height={720} />
+        </div>
+      )}
     </div>
   );
 };

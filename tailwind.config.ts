@@ -14,9 +14,11 @@ const config: Config = {
         neutral3: "#353535",
         neutral4: "#757575",
         neutral5: "#E1E1E1",
+        neutral6: "#A8A8A8",
 
         black1: "#000000",
         primary1: "#00E0FF",
+        primary2: "rgba(0, 224, 255, 0.1)",
       },
       fontFamily: {
         space: ["var(--font-space-mono)", "sans-serif"],
