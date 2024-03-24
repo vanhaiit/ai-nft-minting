@@ -20,7 +20,9 @@ const Filter: React.FC<FilterProps> = ({
 
   useEffect(() => {
     if (data?.length > 0) {
-      onInitValue?.(`${data[0].contract.address}_${data[0].id}`);
+      onInitValue?.(
+        `${data[0].contract.address}*${data[0].id}*${data[0].contract.type}`
+      );
     }
   }, [data]);
 
@@ -34,7 +36,7 @@ const Filter: React.FC<FilterProps> = ({
       }}
       options={data?.map((item: any) => {
         return {
-          value: `${item.contract.address}_${item.id}`,
+          value: `${item.contract.address}*${item.id}*${item.contract.type}`,
           label: item.name,
         };
       })}

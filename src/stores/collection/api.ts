@@ -29,8 +29,6 @@ export const profileApi = baseQueryApi.injectEndpoints({
       query: (params: any) => {
         const paramsString = queryString.stringify({ ...params });
 
-        console.log("paramsString", paramsString);
-
         return {
           url: `events?${paramsString}`,
           method: "GET",
@@ -61,4 +59,5 @@ export const {
   useCreateCollectionDraftMutation,
   useLazyGetDetailCollectionQuery,
   useGetAllCollectionQuery,
+  useGetDetailCollectionQuery,
 } = profileApi;

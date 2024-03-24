@@ -57,11 +57,17 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
     process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!
   );
 
-  const [collectionAddress, idCollection] = collection?.split("_");
+  const [collectionAddress, idCollection, type] = collection?.split("*");
   const getContractMintNft = useContract(
     nftType === NftTypeEnum.ERC_1155 ? ABI_MINT_NFT_1155 : ABI_MINT_NFT_721,
     infoMintNft ? infoMintNft?.contractMint : collectionAddress
   );
+
+  function initValueCollection(value: any) {
+    setCollection(value);
+    const [collectionAddress, idCollection, type] = value?.split("*");
+    setNftType(type);
+  }
 
   const onGetNonce = async () => {
     try {
@@ -220,7 +226,6 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
   const handleGetIpfsHash = async () => {
     onMinting();
     let bodyData = new FormData();
-
     bodyData.append("file", dataImg.dataImg);
     const res: any = await fetchGetIpfsHash(bodyData);
     console.log("🚀 ~ handleGetIpfsHash ~ res:", res);
@@ -275,6 +280,15 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
     }
   }, [infoMintNft]);
 
+  function onChangeOptionCollection(value: any) {
+    if (value === 2) {
+      setNftCollection(value);
+      setCollection("");
+      setNftType(NftTypeEnum.ERC_721);
+    }
+    setNftCollection(value);
+  }
+
   return (
     <CommonModal open={open} onCancel={onCancel}>
       <div className="flex flex-col gap-y-4">
@@ -282,7 +296,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
         <WrapperItem label="NFT collection">
           <div className="flex flex-col gap-y-1">
             <Radio.Group
-              onChange={(e) => setNftCollection(e.target.value)}
+              onChange={(e) => onChangeOptionCollection(e.target.value)}
               value={nftCollection}
             >
               <Radio value={1}>Alpha Quark AI-NFT</Radio>
@@ -292,20 +306,37 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
               <Filter
                 defaultValue={"Existing collections"}
                 value={collection}
-                onChange={setCollection}
-                onInitValue={setCollection}
+                onChange={initValueCollection}
+                onInitValue={initValueCollection}
               />
             )}
           </div>
         </WrapperItem>
         <WrapperItem label="NFT Type">
-          <Radio.Group
-            onChange={(e) => setNftType(e.target.value)}
-            value={nftType}
-          >
-            <Radio value={NftTypeEnum.ERC_721}>ERC-721</Radio>
-            <Radio value={NftTypeEnum.ERC_1155}>ERC-1155</Radio>
-          </Radio.Group>
+          {!!collection ? (
+            <div className="flex-row">
+              <Radio
+                checked={nftType === NftTypeEnum.ERC_721}
+                value={NftTypeEnum.ERC_721}
+              >
+                ERC-721
+              </Radio>
+              <Radio
+                checked={nftType === NftTypeEnum.ERC_1155}
+                value={NftTypeEnum.ERC_1155}
+              >
+                ERC-1155
+              </Radio>
+            </div>
+          ) : (
+            <Radio.Group
+              onChange={(e) => setNftType(e.target.value)}
+              value={nftType}
+            >
+              <Radio value={NftTypeEnum.ERC_721}>ERC-721</Radio>
+              <Radio value={NftTypeEnum.ERC_1155}>ERC-1155</Radio>
+            </Radio.Group>
+          )}
         </WrapperItem>
         <WrapperItem label="Preview">
           <Image src={dataImg.urlImage} alt="" width={180} height={180} />
@@ -335,6 +366,11 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
           isShowArrow={false}
           className="w-fit text-sm"
           onClick={handleGetIpfsHash}
+          disabled={
+            !titleNft ||
+            !description ||
+            (!newNftCollection && nftCollection === 2)
+          }
         >
           Mint
         </CommonButton>

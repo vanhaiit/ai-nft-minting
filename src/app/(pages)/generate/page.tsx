@@ -13,6 +13,7 @@ import Filter from "./_component/Filter";
 import Navigation from "./_component/Navigation";
 import { useLazyGetAllNftQuery } from "@/stores/nft/api";
 import { useAccount } from "wagmi";
+import DetailNftModal from "./_component/DetailNftModal";
 
 const Generate = () => {
   const account = useAccount();
@@ -26,13 +27,15 @@ const Generate = () => {
   const [allNft, setAllNft] = useState<any>();
   const [totalPage, setTotalPage] = useState<any>({ totalPage: 0, total: 0 });
   const [hasNft, setHasNft] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [detailData, setDetailData] = useState<any>();
 
   const handleGetAllNft = async () => {
     const params = {
       limit: LIMIT,
       page: currentPage ? currentPage : 1,
       search: searchValue,
-      collectionId: [valueFilter.split("_")[1]],
+      collectionId: [valueFilter.split("*")[1]],
       walletAddress: account.address,
     };
     const res: any = await getAllNft(params);
@@ -111,14 +114,21 @@ const Generate = () => {
           </div>
           <div className="w-full grid grid-cols-4 gap-6">
             {allNft?.map((item: any, index: number) => (
-              <img
-                key={index}
-                width={100}
-                height={100}
-                src={`https://yellow-passive-octopus-474.mypinata.cloud/ipfs/${item.image}`}
-                alt=""
-                className="w-full h-full max-w-[312px] max-h-[312px] border border-neutral1 bg-neutral2"
-              />
+              <button
+                onClick={() => {
+                  setDetailData(item);
+                  setIsOpenModal(true);
+                }}
+              >
+                <img
+                  key={index}
+                  width={100}
+                  height={100}
+                  src={`https://yellow-passive-octopus-474.mypinata.cloud/ipfs/${item.image}`}
+                  alt=""
+                  className="w-full h-full max-w-[312px] max-h-[312px] border border-neutral1 bg-neutral2"
+                />
+              </button>
             ))}
           </div>
           {allNft.length > 0 && (
@@ -147,6 +157,13 @@ const Generate = () => {
             Generate
           </CommonButton>
         </div>
+      )}
+      {detailData && (
+        <DetailNftModal
+          open={isOpenModal}
+          detailData={detailData}
+          onCancel={() => setIsOpenModal(false)}
+        />
       )}
     </CommonContainer>
   );
