@@ -16,10 +16,7 @@ import { debounce } from "lodash";
 const Step1: React.FC<Step1Props> = ({ onChangeStep }) => {
   const { windowWidth, windowHeight } = useWindowSize();
   const [isOpen, setIsOpen] = useState(false);
-  const [size, setSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+  const [size, setSize] = useState<any>({});
 
   const handleResize = debounce(() => {
     setSize({

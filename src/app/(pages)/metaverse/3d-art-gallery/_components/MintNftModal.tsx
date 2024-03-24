@@ -8,7 +8,7 @@ import { twJoin } from "tailwind-merge";
 import { ModalProps, Radio } from "antd";
 
 import Image from "next/image";
-import Filter from "../../../generate/_component/Filter";
+import Filter from "../../../my-generated-nfts/_component/Filter";
 import CommonModal from "@/app/_components/CommonModal";
 import CommonInput from "@/app/_components/CommonInput";
 import { useAccount } from "wagmi";
@@ -177,7 +177,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
         return res.data.status === "deployed";
       },
       1000,
-      2000
+      4000
     );
     if (res.data.contract.address) {
       setInfoMintNft({
@@ -190,10 +190,9 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
   async function onMintNft(id: string) {
     try {
       const contract: any = await getContractMintNft;
-
       let res;
       if (nftType === NftTypeEnum.ERC_1155) {
-        res = await contract?.mint(account.address, id, 999, ipfsHash);
+        res = await contract?.mint(account.address, id, 1, "0x0", ipfsHash);
       } else {
         res = await contract?.mint(account.address, ipfsHash);
       }
@@ -204,22 +203,23 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
         onMindError();
       }
     } catch (error) {
+      console.log(
+        "🚀 ~ file: MintNftModal.tsx:207 ~ onMintNft ~ error:",
+        error
+      );
       onMindError();
-      console.log("error", error);
     }
   }
 
   const handleMint = async () => {
     if (nftCollection === 2 || !collection) {
       const nonce = await onGetNonce();
-
       const res = await onCreateCollection(nonce);
-
       if (res.signature) {
-        await onCreateCollectionOnChain({ ...res });
+        await onCreateCollectionOnChain({ name: newNftCollection, ...res });
       }
     } else {
-      onMintNft(idCollection);
+      onMintNft(new Date().getTime().toString());
     }
   };
 
@@ -266,7 +266,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
         return res.data.blockchainStatus === "MINTED";
       },
       1000,
-      2000
+      3000
     );
 
     if (res.data.blockchainStatus === "MINTED") {

@@ -14,7 +14,7 @@ import { twJoin } from "tailwind-merge";
 import { formatAddress } from "@/helpers";
 import get from "lodash/get";
 import Link from "next/link";
-import { GENERATE } from "@/constants";
+import { MY_GENERATE_NFTS } from "@/constants";
 import Web3 from "web3";
 import { useAppDispatch } from "@/libs/redux/store";
 import { setAtqBalance } from "@/stores/app";
@@ -62,7 +62,7 @@ const ConnectWalletButton = (props: any) => {
         contentDropdown={
           <>
             <Link
-              href={GENERATE}
+              href={MY_GENERATE_NFTS}
               className={twJoin(
                 "py-2",
                 "w-full",

@@ -1,8 +1,6 @@
-"use client";
-
-import React, { ReactNode, useState } from "react";
-import { twJoin, twMerge } from "tailwind-merge";
 import { Dropdown, DropdownProps } from "antd";
+import React, { ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
 const CommonDropdown: React.FC<CommonDropdownProps> = ({
   children,
@@ -10,13 +8,8 @@ const CommonDropdown: React.FC<CommonDropdownProps> = ({
   className,
   ...otherProps
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
     <Dropdown
-      trigger={["click"]}
-      open={isOpen}
-      onOpenChange={() => setIsOpen(false)}
       dropdownRender={() => (
         <div
           className={twMerge(
@@ -34,7 +27,7 @@ const CommonDropdown: React.FC<CommonDropdownProps> = ({
       className="!font-roboto"
       {...otherProps}
     >
-      <button onClick={() => setIsOpen(true)}>{children}</button>
+      <button>{children}</button>
     </Dropdown>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
@@ -105,7 +106,7 @@ const Generate = () => {
             </span>
           </div>
           <div className="space-between-root">
-            <SearchInput onClickSearch={(value) => setSearchValue(value)} />
+            <SearchInput onSearch={(value) => setSearchValue(value)} />
             <Filter
               value={valueFilter}
               defaultValue={valueFilter}
@@ -115,13 +116,13 @@ const Generate = () => {
           <div className="w-full grid grid-cols-4 gap-6">
             {allNft?.map((item: any, index: number) => (
               <button
+                key={index}
                 onClick={() => {
                   setDetailData(item);
                   setIsOpenModal(true);
                 }}
               >
                 <img
-                  key={index}
                   width={100}
                   height={100}
                   src={`https://yellow-passive-octopus-474.mypinata.cloud/ipfs/${item.image}`}

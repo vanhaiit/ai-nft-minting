@@ -94,6 +94,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
             {isShowCardMint && (
               <>
                 <MintItem
+                  key={1}
                   valueText={valueText}
                   valueFile={fileValue}
                   isGenerateTextToImage={isGenerateTextToImage}
@@ -104,6 +105,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
                   }}
                 />
                 <MintItem
+                  key={2}
                   valueText={valueText}
                   valueFile={fileValue}
                   isGenerateTextToImage={isGenerateTextToImage}
@@ -114,6 +116,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
                   }}
                 />
                 <MintItem
+                  key={3}
                   valueText={valueText}
                   valueFile={fileValue}
                   isGenerateTextToImage={isGenerateTextToImage}

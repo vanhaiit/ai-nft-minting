@@ -44,6 +44,8 @@ const MintItem: React.FC<MintItemProps> = ({
     if (res.dataImg) {
       setDataImg(res);
     } else {
+      console.log(1111);
+
       setIsGenerateImageError(true);
     }
   };
@@ -63,13 +65,19 @@ const MintItem: React.FC<MintItemProps> = ({
 
   useEffect(() => {
     if (!valueText || valueFile) return;
-
+    setDataImg({
+      dataImg: undefined,
+      urlImage: "",
+    });
     onGenerateTextToImage();
   }, [isGenerateTextToImage]);
 
   useEffect(() => {
     if (!valueFile || !valueText) return;
-
+    setDataImg({
+      dataImg: undefined,
+      urlImage: "",
+    });
     onUploadGenerateAiImg();
   }, [isUploadGenerateAiImg]);
 
