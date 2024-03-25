@@ -1,10 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 import CommonButton, {
   CommonButtonVariantEnum,
 } from "@/app/_components/CommonButton";
 import CommonModal from "@/app/_components/CommonModal";
 import { useGetDetailCollectionQuery } from "@/stores/collection/api";
 import { ModalProps } from "antd";
-import Image from "next/image";
 import React from "react";
 
 const DetailNftModal: React.FC<DetailNftModalProps> = ({
@@ -51,14 +51,14 @@ const DetailNftModal: React.FC<DetailNftModalProps> = ({
 
         <div className="flex flex-col gap-y-2">
           <p className=" font-medium">Current Owner</p>
-          <p className="w-full p-4 border text-sm">{detailData?.userWallet}</p>
+          <p className="w-full p-4 border text-sm">{data?.contract?.address}</p>
         </div>
         <div className="flex flex-col gap-y-2">
           <p className="font-medium">Description</p>
           <p className="w-full p-4 border text-sm">{detailData?.description}</p>
         </div>
         <CommonButton
-          variant={CommonButtonVariantEnum.primary}
+          variant={CommonButtonVariantEnum.outline}
           isShowArrow={false}
           onClick={onCancel}
           className="w-fit text-sm"

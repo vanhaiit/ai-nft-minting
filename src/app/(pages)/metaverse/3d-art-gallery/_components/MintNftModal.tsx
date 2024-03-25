@@ -24,6 +24,8 @@ import {
   useCreateMintMutation,
   useLazyGetDetailNftQuery,
 } from "@/stores/nft/api";
+import { useAppSelector } from "@/libs/redux/store";
+import { getAtpBalance } from "@/stores/app/selectors";
 
 let ipfsHash = "";
 
@@ -51,6 +53,8 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
   const [titleNft, setTitleNft] = useState("");
   const [description, setDescription] = useState("");
   const [newNftCollection, setNewNftCollection] = useState("");
+  const [balanceError, setBalanceError] = useState(false);
+  const balance = useAppSelector(getAtpBalance);
 
   const getContract = useContract(
     ABI_CONTRACT,
@@ -224,6 +228,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
   };
 
   const handleGetIpfsHash = async () => {
+    if (balance < 50) return setBalanceError(true);
     onMinting();
     let bodyData = new FormData();
     bodyData.append("file", dataImg.dataImg);
@@ -290,92 +295,127 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
   }
 
   return (
-    <CommonModal open={open} onCancel={onCancel}>
-      <div className="flex flex-col gap-y-4">
-        <p className="text-xl font-medium">Do you want to mint this image?</p>
-        <WrapperItem label="NFT collection">
-          <div className="flex flex-col gap-y-1">
-            <Radio.Group
-              onChange={(e) => onChangeOptionCollection(e.target.value)}
-              value={nftCollection}
-            >
-              <Radio value={1}>Alpha Quark AI-NFT</Radio>
-              <Radio value={2}>A New NFT collection</Radio>
-            </Radio.Group>
-            {nftCollection === 1 && (
-              <Filter
-                defaultValue={"Existing collections"}
-                value={collection}
-                onChange={initValueCollection}
-                onInitValue={initValueCollection}
-              />
-            )}
-          </div>
-        </WrapperItem>
-        <WrapperItem label="NFT Type">
-          {!!collection ? (
-            <div className="flex-row">
-              <Radio
-                checked={nftType === NftTypeEnum.ERC_721}
-                value={NftTypeEnum.ERC_721}
+    <>
+      <CommonModal
+        open={open}
+        className="h-[calc(100svh-200px)] flex items-center"
+        onCancel={onCancel}
+      >
+        <div className="flex flex-col gap-y-4">
+          <p className="text-xl font-medium">Do you want to mint this image?</p>
+          <WrapperItem label="NFT collection">
+            <div className="flex flex-col gap-y-1">
+              <Radio.Group
+                onChange={(e) => onChangeOptionCollection(e.target.value)}
+                value={nftCollection}
               >
-                ERC-721
-              </Radio>
-              <Radio
-                checked={nftType === NftTypeEnum.ERC_1155}
-                value={NftTypeEnum.ERC_1155}
-              >
-                ERC-1155
-              </Radio>
+                <Radio value={1}>Alpha Quark AI-NFT</Radio>
+                <Radio value={2}>A New NFT collection</Radio>
+              </Radio.Group>
+              {nftCollection === 1 && (
+                <Filter
+                  defaultValue={"Existing collections"}
+                  value={collection}
+                  onChange={initValueCollection}
+                  onInitValue={initValueCollection}
+                />
+              )}
             </div>
-          ) : (
-            <Radio.Group
-              onChange={(e) => setNftType(e.target.value)}
-              value={nftType}
-            >
-              <Radio value={NftTypeEnum.ERC_721}>ERC-721</Radio>
-              <Radio value={NftTypeEnum.ERC_1155}>ERC-1155</Radio>
-            </Radio.Group>
-          )}
-        </WrapperItem>
-        <WrapperItem label="Preview">
-          <Image src={dataImg.urlImage} alt="" width={180} height={180} />
-        </WrapperItem>
-        <WrapperItem label="Title of NFT">
-          <CommonInput
-            className="w-full"
-            onChange={(e) => setTitleNft(e.target.value)}
-          />
-        </WrapperItem>
-        {nftCollection === 2 && (
-          <WrapperItem label="New Title of NFT collection">
+          </WrapperItem>
+          <WrapperItem label="NFT Type">
+            {!!collection ? (
+              <div className="flex-row">
+                <Radio
+                  checked={nftType === NftTypeEnum.ERC_721}
+                  value={NftTypeEnum.ERC_721}
+                >
+                  ERC-721
+                </Radio>
+                <Radio
+                  checked={nftType === NftTypeEnum.ERC_1155}
+                  value={NftTypeEnum.ERC_1155}
+                >
+                  ERC-1155
+                </Radio>
+              </div>
+            ) : (
+              <Radio.Group
+                onChange={(e) => setNftType(e.target.value)}
+                value={nftType}
+              >
+                <Radio value={NftTypeEnum.ERC_721}>ERC-721</Radio>
+                <Radio value={NftTypeEnum.ERC_1155}>ERC-1155</Radio>
+              </Radio.Group>
+            )}
+          </WrapperItem>
+          <WrapperItem label="Preview">
+            <Image src={dataImg.urlImage} alt="" width={180} height={180} />
+          </WrapperItem>
+          <WrapperItem label="Title of NFT">
             <CommonInput
               className="w-full"
-              onChange={(e) => setNewNftCollection(e.target.value)}
+              onChange={(e) => setTitleNft(e.target.value)}
             />
           </WrapperItem>
-        )}
-        <WrapperItem label="Description">
-          <CommonInput
-            className="w-full"
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </WrapperItem>
-        <CommonButton
-          variant={CommonButtonVariantEnum.primary}
-          isShowArrow={false}
-          className="w-fit text-sm"
-          onClick={handleGetIpfsHash}
-          disabled={
-            !titleNft ||
-            !description ||
-            (!newNftCollection && nftCollection === 2)
-          }
-        >
-          Mint
-        </CommonButton>
-      </div>
-    </CommonModal>
+          {nftCollection === 2 && (
+            <WrapperItem label="New Title of NFT collection">
+              <CommonInput
+                className="w-full"
+                onChange={(e) => setNewNftCollection(e.target.value)}
+              />
+            </WrapperItem>
+          )}
+          <WrapperItem label="Description">
+            <CommonInput
+              className="w-full"
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </WrapperItem>
+          <CommonButton
+            variant={CommonButtonVariantEnum.outline}
+            isShowArrow={false}
+            className="w-fit text-sm"
+            onClick={handleGetIpfsHash}
+            disabled={
+              !titleNft ||
+              !description ||
+              (!newNftCollection && nftCollection === 2)
+            }
+          >
+            Mint
+          </CommonButton>
+        </div>
+      </CommonModal>
+      <CommonModal
+        className="!w-[686px] h-[calc(100svh-200px)] flex items-center"
+        open={balanceError}
+        onCancel={() => setBalanceError(false)}
+      >
+        <div className="flex flex-col gap-y-6 items-center">
+          <div className="flex flex-col items-center gap-y-4 text-center">
+            <p className="text-[20px] font-medium">Oops,</p>
+            <p className="text-[16px] text-primary1">
+              <p className="text-[16px] text-white">
+                It seems that do not hold any Alpha Quark Token yet.
+              </p>
+              <span>
+                To mint a new NFT collection rather than Alpha Quark AI-NFT
+                collection, you need to hold at least 50 AQT{" "}
+                <span className="text-[16px] text-white">on your wallet.</span>
+              </span>
+            </p>
+          </div>
+          <CommonButton
+            variant={CommonButtonVariantEnum.outline}
+            isShowArrow={false}
+            className="w-fit text-sm"
+            onClick={() => setBalanceError(false)}
+          >
+            I got it
+          </CommonButton>
+        </div>
+      </CommonModal>
+    </>
   );
 };
 

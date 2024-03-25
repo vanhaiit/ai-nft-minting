@@ -30,6 +30,7 @@ const LightTheme: ThemeConfig = {
       colorPrimaryActive: "rgb(0, 224, 255)",
       colorText: "#E1E1E1",
       colorPrimary: "rgb(0, 224, 255)",
+      dotSize: 5,
     },
     Select: {
       borderRadius: 0,

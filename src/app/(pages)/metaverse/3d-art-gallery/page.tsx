@@ -24,7 +24,7 @@ const ArtGallery = () => {
     if (!account.address) return setContentModal(<Fragment />);
     if (balance < 50) {
       setContentModal({
-        class: "!w-[605px]",
+        class: "!w-[605px] h-[calc(100svh-200px)] flex items-center",
         content: (
           <div className="flex flex-col items-center gap-y-4 text-center">
             <p className="text-[20px] font-medium">Oops,</p>
@@ -39,13 +39,13 @@ const ArtGallery = () => {
       });
     } else {
       setContentModal({
-        class: "!w-[605px]",
+        class: "!w-[610px] h-[calc(100svh-200px)] flex items-center",
         content: (
-          <div className="flex flex-col items-center gap-y-4">
+          <div className="flex flex-col items-center gap-y-4 text-center">
             <p className="text-[20px] font-medium">Congrats!</p>
             <p className="text-[16px]">
               It seems that you’re already an Alpha Quark Token holder! You can
-              use the latest version of AI model to generate images!{" "}
+              use the latest version of AI model to generate images!
             </p>
           </div>
         ),

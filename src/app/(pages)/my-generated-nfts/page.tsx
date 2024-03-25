@@ -1,22 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import CommonContainer from "@/app/_components/CommonContainer";
-import { TypeAnimation } from "react-type-animation";
-import CommonButton, {
-  CommonButtonVariantEnum,
-} from "@/app/_components/CommonButton";
-import { twJoin } from "tailwind-merge";
-import SearchInput from "./_component/SearchInput";
-import Filter from "./_component/Filter";
-import Navigation from "./_component/Navigation";
+import { ART_GALLERY } from "@/constants";
 import { useLazyGetAllNftQuery } from "@/stores/nft/api";
+import Link from "next/link";
+import { TypeAnimation } from "react-type-animation";
+import { twJoin } from "tailwind-merge";
 import { useAccount } from "wagmi";
 import DetailNftModal from "./_component/DetailNftModal";
-import Link from "next/link";
-import { ART_GALLERY } from "@/constants";
+import Filter from "./_component/Filter";
+import Navigation from "./_component/Navigation";
+import SearchInput from "./_component/SearchInput";
 
 const Generate = () => {
   const account = useAccount();
@@ -115,7 +112,7 @@ const Generate = () => {
               onChange={(value) => setValueFilter(value)}
             />
           </div>
-          <div className="w-full grid grid-cols-4 gap-6">
+          <div className="w-full grid grid-cols-4 gap-6 min-h-[696px] flex items-start">
             {allNft?.map((item: any, index: number) => (
               <button
                 key={index}

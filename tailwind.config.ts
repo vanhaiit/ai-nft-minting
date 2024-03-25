@@ -15,6 +15,7 @@ const config: Config = {
         neutral4: "#757575",
         neutral5: "#E1E1E1",
         neutral6: "#A8A8A8",
+        neutral7: "rgba(255, 255, 255, 0.5)",
 
         black1: "#000000",
         primary1: "#00E0FF",

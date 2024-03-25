@@ -86,7 +86,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
         </CommonButton>
       </CommonContainer>
       <CommonContainer
-        containerClassName="border-t py-10"
+        containerClassName="border-t border-neutral7 py-10"
         className={twJoin(
           isReGenerate ? "center-root" : "flex-row space-between-root gap-x-6"
         )}

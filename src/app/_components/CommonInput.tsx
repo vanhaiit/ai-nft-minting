@@ -14,7 +14,7 @@ const CommonInput: React.FC<CommonInputProps> = ({
         className={twMerge(
           "text-sm",
           "px-2 py-3",
-          "w-64 h-11",
+          "w-[312px] h-[36px]",
           "bg-inherit",
           "border border-neutral1",
           "focus-visible:outline-none",

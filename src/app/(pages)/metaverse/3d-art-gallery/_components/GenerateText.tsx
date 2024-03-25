@@ -17,7 +17,7 @@ const GenerateText: React.FC<GenerateTextProps> = ({
       )}
     >
       <textarea
-        className="w-full h-22 bg-transparent focus-visible:outline-none"
+        className="w-full !h-[90px] bg-transparent focus-visible:outline-none"
         style={{ resize: "none" }}
         placeholder="A beautiful forest and futuristic city where there are a lot of
               artistic buildings."

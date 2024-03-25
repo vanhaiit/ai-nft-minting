@@ -11,7 +11,7 @@ const MainLayoutHeader = () => {
       className={twJoin(
         "bg-black1",
         "h-20 w-full",
-        "fixed z-10 top-0 border-b z-30"
+        "fixed top-0 border-b border-neutral7 z-30"
       )}
     >
       <div

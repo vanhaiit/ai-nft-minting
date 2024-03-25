@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "name": "ai-nft-minting-fe",
+      "script": "yarn start",
+      "node_args": "",
+      "instances": 1
+    }
+  ]
+}

@@ -11,7 +11,7 @@ const StepNavigation: React.FC<StepNavigationProps> = ({
       className={twJoin(
         "w-full h-1 py-3",
         "fixed z-50 bottom-0",
-        " items-center gap-x-4 bg-black1",
+        "items-center gap-x-4 bg-black1",
         Number(step) < 4 ? "flex" : "hidden"
       )}
     >
