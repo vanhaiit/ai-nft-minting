@@ -5,7 +5,7 @@ import Step2 from "./_components/Step2";
 import { StepEnum } from "@/types";
 import StepNavigation from "./_components/StepNavigation";
 import CommonModal from "@/app/_components/CommonModal";
-import { useAppDispatch, useAppSelector } from "@/libs/redux/store";
+import { useAppSelector } from "@/libs/redux/store";
 import { useAccount } from "wagmi";
 import { getAtpBalance } from "@/stores/app/selectors";
 import CommonButton, {
@@ -43,10 +43,14 @@ const ArtGallery = () => {
         content: (
           <div className="flex flex-col items-center gap-y-4 text-center">
             <p className="text-[20px] font-medium">Congrats!</p>
-            <p className="text-[16px]">
-              It seems that you’re already an Alpha Quark Token holder! You can
-              use the latest version of AI model to generate images!
-            </p>
+            <div className="flex flex-col w-full">
+              <p className="text-[16px] -tracking-[1.5px]">
+                It seems that you’re already an Alpha Quark Token holder!
+              </p>
+              <p className="text-[16px] -tracking-[1.5px]">
+                You can use the latest version of AI model to generate images!
+              </p>
+            </div>
           </div>
         ),
       });

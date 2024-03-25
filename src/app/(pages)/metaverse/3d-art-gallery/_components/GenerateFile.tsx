@@ -63,7 +63,7 @@ const GenerateFile: React.FC<GenerateFileProp> = ({ onChangeSelectFile }) => {
             ))}
           </div>
         ) : (
-          <p className="text-neutral1 font-roboto">
+          <p className="text-neutral1 font-roboto_mono">
             Upload your image that you want to make the AI model refer to
           </p>
         )}

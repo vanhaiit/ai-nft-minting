@@ -186,7 +186,7 @@ const MintItem: React.FC<MintItemProps> = ({
           </CommonButton>
         </div>
       </CommonModal>
-      <CommonModal open={isOpenModalError}>
+      <CommonModal open={isOpenModalError} className="!w-[285px]">
         <div className="flex flex-col items-center gap-y-4">
           <p className="w-full text-center">
             Something went wrong! Please try again.
@@ -203,7 +203,7 @@ const MintItem: React.FC<MintItemProps> = ({
           </CommonButton>
         </div>
       </CommonModal>
-      <CommonModal open={isOpenModalMinting}>
+      <CommonModal open={isOpenModalMinting} className="!w-[453px]">
         <div className="flex flex-col gap-y-6 items-center">
           <p className="w-full text-center">
             Please wait until your NFT minting transaction is completed

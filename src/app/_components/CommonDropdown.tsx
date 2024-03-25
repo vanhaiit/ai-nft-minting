@@ -17,14 +17,14 @@ const CommonDropdown: React.FC<CommonDropdownProps> = ({
             "mt-[25px]",
             "bg-neutral2",
             "flex flex-col",
-            "text-neutral1 center-root font-roboto",
+            "text-neutral1 center-root font-roboto_mono",
             className
           )}
         >
           {contentDropdown}
         </div>
       )}
-      className="!font-roboto"
+      className="!font-roboto_mono"
       {...otherProps}
     >
       <button>{children}</button>

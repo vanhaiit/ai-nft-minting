@@ -28,7 +28,6 @@ const CommonButton: React.FC<CommonButtonProps> = ({
         "border",
         "relative",
         "py-2 pl-4",
-        // "font-roboto",
         isShowArrow ? "pr-8" : "pr-4",
         variantStyle,
         className

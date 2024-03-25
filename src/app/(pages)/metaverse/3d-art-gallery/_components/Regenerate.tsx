@@ -2,8 +2,14 @@ import { fetchGenerateAiImage } from "@/helpers";
 import Image from "next/image";
 import React, { ComponentPropsWithoutRef, useEffect, useState } from "react";
 import { TypeAnimation } from "react-type-animation";
-import { twMerge } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 import { ImageAssets } from "../../../../../../public";
+import CommonModal from "@/app/_components/CommonModal";
+import MintNftModal from "./MintNftModal";
+import { CheckIcon } from "@/app/_components/icon";
+import CommonButton, {
+  CommonButtonVariantEnum,
+} from "@/app/_components/CommonButton";
 
 const Regenerate: React.FC<RegenerateProps> = ({
   textValue,
@@ -17,7 +23,12 @@ const Regenerate: React.FC<RegenerateProps> = ({
     dataImg: undefined,
     urlImage: "",
   });
-  const isMinted = false;
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenModalSuccess, setIsOpenModalSuccess] = useState(false);
+  const [isOpenModalError, setIsOpenModalError] = useState(false);
+  const [isOpenModalMinting, setIsOpenModalMinting] = useState(false);
+  const [isMinted, setIsMinted] = useState(false);
 
   const handleReGenerate = async () => {
     setIsReGenerate(true);
@@ -42,6 +53,8 @@ const Regenerate: React.FC<RegenerateProps> = ({
       className={twMerge(
         "w-[424px] h-[424px] relative hover:border-4 border-primary1",
         "[&>.coating]:hover:!flex",
+        "[&>.button]:hover:!bg-primary1",
+        isMinted && "border-4",
         className
       )}
       {...otherProps}
@@ -82,7 +95,7 @@ const Regenerate: React.FC<RegenerateProps> = ({
         </>
       )}
 
-      {!isReGenerate && (
+      {!isReGenerate && !isMinted && (
         <div className="coating w-full hidden h-full flex-col items-center justify-center px-11 bg-black1/80 gap-y-2 ">
           <p className="font-medium">
             I do not like this image. I want to regenerate one more.
@@ -95,77 +108,93 @@ const Regenerate: React.FC<RegenerateProps> = ({
           </button>
         </div>
       )}
+      {!isReGenerate && (
+        <button
+          className={twJoin(
+            "button",
+            "py-4",
+            "w-full",
+            "button",
+            isMinted ? "bg-primary1 text-black" : "bg-black1/70",
+            "center-root gap-x-2",
+            "absolute bottom-0 left-0"
+          )}
+          onClick={() => setIsOpenModal(true)}
+          disabled={
+            isMinted ||
+            isReGenerateImageError ||
+            !dataImg.dataImg ||
+            isReGenerate
+          }
+        >
+          {isMinted && <CheckIcon className={twJoin("icon", "text-black1")} />}
+          Mint
+        </button>
+      )}
+
+      <MintNftModal
+        open={isOpenModal}
+        onCancel={() => setIsOpenModal(false)}
+        dataImg={dataImg}
+        onMindError={() => {
+          setIsOpenModalMinting(false);
+          setIsOpenModalError(true);
+        }}
+        onMindSuccess={() => {
+          setIsOpenModalMinting(false);
+          setIsOpenModalSuccess(true);
+          setIsMinted(true);
+        }}
+        onMinting={() => setIsOpenModalMinting(true)}
+      />
+      <CommonModal open={isOpenModalSuccess}>
+        <div className="flex flex-col items-center gap-y-4">
+          <p className="w-full text-center">Successfully minted!</p>
+          <CommonButton
+            variant={CommonButtonVariantEnum.primary}
+            isShowArrow={false}
+            onClick={() => {
+              setIsOpenModalSuccess(false);
+              setIsOpenModal(false);
+            }}
+          >
+            OK
+          </CommonButton>
+        </div>
+      </CommonModal>
+      <CommonModal open={isOpenModalError}>
+        <div className="flex flex-col items-center gap-y-4">
+          <p className="w-full text-center">
+            Something went wrong! Please try again.
+          </p>
+          <CommonButton
+            variant={CommonButtonVariantEnum.primary}
+            isShowArrow={false}
+            onClick={() => {
+              setIsOpenModalError(false);
+              setIsOpenModal(false);
+            }}
+          >
+            OK
+          </CommonButton>
+        </div>
+      </CommonModal>
+      <CommonModal open={isOpenModalMinting} className="!w-[453px]">
+        <div className="flex flex-col gap-y-6 items-center">
+          <p className="w-full text-center">
+            Please wait until your NFT minting transaction is completed
+          </p>
+          <Image
+            src={ImageAssets.LoadingImage}
+            alt=""
+            width={64}
+            height={64}
+            className="animate-spin"
+          />
+        </div>
+      </CommonModal>
     </div>
   );
-
-  // <div
-  //   className={twMerge(
-  //     "relative",
-  //     "container",
-  //     "bg-neutral2",
-  //     "center-root",
-  //     !isMinted && "cursor-pointer",
-  //     "translate-hidden",
-  //     "border-4 border-transparent",
-  //     "w-full h-full max-w-[420px] max-h-[420px] hover:border-primary1",
-  //     isMinted && "border-primary1 disable",
-  //     "[&>.button]:hover:bg-primary1 ",
-  //     "[&~.icon]:hover:block",
-  //     className
-  //   )}
-  //   {...otherProps}
-  // >
-  //   {dataImg.dataImg ? (
-  //     <Image
-  //       src={dataImg.urlImage}
-  //       width={100}
-  //       height={100}
-  //       alt=""
-  //       className="w-full h-full"
-  //     />
-  //   ) : (
-  //     <div className="w-full h-[408px] flex flex-col center-root gap-y-2">
-  //       {isReGenerateImageError ? (
-  //         <TypeAnimation
-  //           sequence={["Generate Ai Image Error"]}
-  //           wrapper="p"
-  //           cursor={true}
-  //         />
-  //       ) : (
-  //         <>
-  //           <Image
-  //             src={ImageAssets.LoadingImage}
-  //             alt=""
-  //             width={64}
-  //             height={64}
-  //             className="animate-spin"
-  //           />
-  //           <TypeAnimation
-  //             sequence={["Generating the image..."]}
-  //             wrapper="p"
-  //             cursor={true}
-  //           />
-  //         </>
-  //       )}
-  //     </div>
-  //   )}
-
-  //   <button
-  //     className={twJoin(
-  //       "button",
-  //       "py-4",
-  //       "w-full",
-  //       "button",
-  //       isMinted ? "bg-primary1 text-black" : "bg-black1/70",
-  //       "center-root gap-x-2",
-  //       "absolute bottom-0 left-0"
-  //     )}
-  //     // disabled={isMinted || isGenerateImageError || !dataImg.dataImg}
-  //   >
-  //     {isMinted && <CheckIcon className={twJoin("icon", "text-black1")} />}
-  //     Mint
-  //   </button>
-  // </div>
 };
 
 export default Regenerate;

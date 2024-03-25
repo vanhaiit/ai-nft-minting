@@ -41,6 +41,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
   const [nftCollection, setNftCollection] = useState(1);
   const [nftType, setNftType] = useState(NftTypeEnum.ERC_721);
   const [collection, setCollection] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [getSignature] = useLazyGetSignatureQuery();
   const [createCollectionDraft] = useCreateCollectionDraftMutation();
   const [getDetailCollection] = useLazyGetDetailCollectionQuery();
@@ -298,7 +299,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
     <>
       <CommonModal
         open={open}
-        className="h-[calc(100svh-200px)] flex items-center"
+        className="h-[calc(100svh-200px)] flex items-center !w-[404px]"
         onCancel={onCancel}
       >
         <div className="flex flex-col gap-y-4">
@@ -309,8 +310,12 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
                 onChange={(e) => onChangeOptionCollection(e.target.value)}
                 value={nftCollection}
               >
-                <Radio value={1}>Alpha Quark AI-NFT</Radio>
-                <Radio value={2}>A New NFT collection</Radio>
+                <Radio value={1} className="!font-roboto">
+                  Alpha Quark AI-NFT
+                </Radio>
+                <Radio value={2} className="!font-roboto">
+                  A New NFT collection
+                </Radio>
               </Radio.Group>
               {nftCollection === 1 && (
                 <Filter
@@ -357,6 +362,14 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
               onChange={(e) => setTitleNft(e.target.value)}
             />
           </WrapperItem>
+          {nftType === NftTypeEnum.ERC_1155 && (
+            <WrapperItem label="Quantity">
+              <CommonInput
+                className="w-full"
+                onChange={(e) => setQuantity(e.target.value)}
+              />
+            </WrapperItem>
+          )}
           {nftCollection === 2 && (
             <WrapperItem label="New Title of NFT collection">
               <CommonInput

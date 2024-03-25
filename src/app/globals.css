@@ -48,12 +48,10 @@ p {
   align-items: center;
   justify-content: space-between;
 }
-.ant-radio-inner::after{
+.ant-radio-inner::after {
   background: rgb(0, 0, 0) !important;
 }
 
-
-
 .ant-radio:not(.ant-radio-checked) .ant-radio-inner {
-    background-color: black !important;
+  background-color: black !important;
 }

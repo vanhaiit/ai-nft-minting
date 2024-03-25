@@ -23,7 +23,8 @@ const config: Config = {
       },
       fontFamily: {
         space: ["var(--font-space-mono)", "sans-serif"],
-        roboto: ["var(--font-roboto-mono)", "sans-serif"],
+        roboto_mono: ["var(--font-roboto-mono)", "sans-serif"],
+        roboto: ["var(--font-roboto)", "sans-serif"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

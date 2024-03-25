@@ -12,18 +12,15 @@ import { ImageAssets } from "../../../../../../public";
 const Step1: React.FC<Step1Props> = ({ onChangeStep }) => {
   return (
     <div className="w-full">
-      <div
-        className={twMerge("w-full h-full", "flex flex-col justify-between")}
-      >
-        <CommonContainer containerClassName="h-[350px] flex justify-center items-center">
-          <p className="w-3/4 !text-white text-[55px]  font-bold text-space_mono uppercase h-[190px] max-h-[190px]">
+      <div className={twMerge("w-full h-full", "flex flex-col")}>
+        <CommonContainer containerClassName="h-[350px] flex justify-center items-center py-[80px]">
+          <p className="w-3/4 !text-white text-[55px] font-extrabold !font-space uppercase h-[190px] max-h-[190px]">
             <TypeAnimation
               sequence={[
                 `Get ready for the imminent \n
                 mass adoption of \n
                 artificial intelligence...`,
               ]}
-              className="!text-white "
               cursor={true}
               style={{
                 whiteSpace: "pre-line",

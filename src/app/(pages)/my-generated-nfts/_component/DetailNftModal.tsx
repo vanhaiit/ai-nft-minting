@@ -20,7 +20,7 @@ const DetailNftModal: React.FC<DetailNftModalProps> = ({
   );
 
   return (
-    <CommonModal {...otherProps}>
+    <CommonModal {...otherProps} className="!w-[404px]">
       <div className="w-full h-full flex flex-col gap-y-4">
         <p className="text-2xl font-medium">NFT Detail</p>
 
