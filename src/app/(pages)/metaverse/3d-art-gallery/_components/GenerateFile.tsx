@@ -68,13 +68,14 @@ const GenerateFile: React.FC<GenerateFileProp> = ({ onChangeSelectFile }) => {
           </p>
         )}
 
-        <div className="w-[72px] h-5 overflow-hidden relative ml-auto [&>.text]:hover:!text-primary1">
+        <div className="w-[72px] h-5 overflow-hidden relative ml-auto [&>.text]:hover:!text-primary1 !cursor-pointer">
           <input
             type="file"
+            accept="image/png, image/gif, image/jpeg"
             onChange={handleChange}
-            className="opacity-0 w-17"
+            className="opacity-0 w-17 !cursor-pointer"
           />
-          <div className="text absolute top-0 flex items-center gap-x-1 text-sm text-neutral4 -z-10">
+          <div className="text absolute top-0 flex items-center gap-x-1 text-sm text-neutral4 -z-10 !cursor-pointer">
             Select
             <ArrowIcon />
           </div>

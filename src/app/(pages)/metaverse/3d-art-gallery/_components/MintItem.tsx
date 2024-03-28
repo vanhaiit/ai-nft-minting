@@ -1,27 +1,29 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { ComponentPropsWithoutRef, useEffect, useState } from "react";
 import { CheckIcon } from "@/app/_components/icon";
+import React, {
+  ComponentPropsWithoutRef,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { TypeAnimation } from "react-type-animation";
 import { twJoin, twMerge } from "tailwind-merge";
 import { ImageAssets } from "../../../../../../public";
 
-import { useAppDispatch, useAppSelector } from "@/libs/redux/store";
-import { getAtpBalance } from "@/stores/app/selectors";
-import Image from "next/image";
-import MintNftModal from "./MintNftModal";
-import { fetchGenerateAiImage, fetchGenerateTextToImage } from "@/helpers";
-import CommonModal from "@/app/_components/CommonModal";
 import CommonButton, {
   CommonButtonVariantEnum,
 } from "@/app/_components/CommonButton";
-
+import CommonModal from "@/app/_components/CommonModal";
+import { fetchGenerateAiImage, fetchGenerateTextToImage } from "@/helpers";
+import Image from "next/image";
+import MintNftModal from "./MintNftModal";
 const MintItem: React.FC<MintItemProps> = ({
   valueText,
   valueFile,
   className,
-  isGenerateTextToImage,
-  isUploadGenerateAiImg,
+  isGenerate,
   onRegenerate,
   ...otherProps
 }) => {
@@ -31,6 +33,7 @@ const MintItem: React.FC<MintItemProps> = ({
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState(false);
   const [isOpenModalError, setIsOpenModalError] = useState(false);
   const [isOpenModalMinting, setIsOpenModalMinting] = useState(false);
+  const refLoad = useRef(false);
 
   const [dataImg, setDataImg] = useState<any>({
     dataImg: undefined,
@@ -38,48 +41,47 @@ const MintItem: React.FC<MintItemProps> = ({
   });
 
   const onGenerateTextToImage = async () => {
+    if (refLoad.current) return;
+    refLoad.current = true;
     const res = await fetchGenerateTextToImage({
       input: valueText,
     });
     if (res.dataImg) {
       setDataImg(res);
     } else {
-      console.log(1111);
-
       setIsGenerateImageError(true);
     }
+    refLoad.current = false;
   };
 
   const onUploadGenerateAiImg = async () => {
+    if (refLoad.current) return;
+    refLoad.current = true;
     let bodyData = new FormData();
     bodyData.append("file", valueFile);
     bodyData.append("input", valueText);
     const res = await fetchGenerateAiImage(bodyData);
-
     if (res.dataImg) {
       setDataImg(res);
     } else {
       setIsGenerateImageError(true);
     }
+    refLoad.current = false;
   };
 
   useEffect(() => {
-    if (!valueText || valueFile) return;
+    if (!valueText && !valueFile) return;
+    setIsGenerateImageError(false);
     setDataImg({
       dataImg: undefined,
       urlImage: "",
     });
-    onGenerateTextToImage();
-  }, [isGenerateTextToImage]);
-
-  useEffect(() => {
-    if (!valueFile || !valueText) return;
-    setDataImg({
-      dataImg: undefined,
-      urlImage: "",
-    });
-    onUploadGenerateAiImg();
-  }, [isUploadGenerateAiImg]);
+    if (valueText && !valueFile) {
+      onGenerateTextToImage();
+    } else {
+      onUploadGenerateAiImg();
+    }
+  }, [isGenerate]);
 
   return (
     <div
@@ -188,7 +190,7 @@ const MintItem: React.FC<MintItemProps> = ({
       </CommonModal>
       <CommonModal open={isOpenModalError} className="!w-[285px]">
         <div className="flex flex-col items-center gap-y-4">
-          <p className="w-full text-center">
+          <p className="w-full text-center text-[16px]">
             Something went wrong! Please try again.
           </p>
           <CommonButton
@@ -205,7 +207,7 @@ const MintItem: React.FC<MintItemProps> = ({
       </CommonModal>
       <CommonModal open={isOpenModalMinting} className="!w-[453px]">
         <div className="flex flex-col gap-y-6 items-center">
-          <p className="w-full text-center">
+          <p className="w-full text-center text-[16px]">
             Please wait until your NFT minting transaction is completed
           </p>
           <Image
@@ -226,7 +228,6 @@ export default MintItem;
 interface MintItemProps extends ComponentPropsWithoutRef<"div"> {
   valueText: string;
   valueFile: any;
-  isGenerateTextToImage: boolean;
-  isUploadGenerateAiImg: boolean;
+  isGenerate: boolean;
   onRegenerate: (value: any) => void;
 }

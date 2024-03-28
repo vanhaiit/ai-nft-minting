@@ -1,31 +1,35 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { ComponentPropsWithoutRef, useEffect, useState } from "react";
 import CommonButton, {
   CommonButtonVariantEnum,
 } from "@/app/_components/CommonButton";
-import { twJoin } from "tailwind-merge";
 import { ModalProps, Radio } from "antd";
+import React, { ComponentPropsWithoutRef, useEffect, useState } from "react";
+import { twJoin } from "tailwind-merge";
 
-import Image from "next/image";
-import Filter from "../../../my-generated-nfts/_component/Filter";
-import CommonModal from "@/app/_components/CommonModal";
 import CommonInput from "@/app/_components/CommonInput";
-import { useAccount } from "wagmi";
-import { useContract } from "@/hooks/useContract";
+import CommonModal from "@/app/_components/CommonModal";
 import { ABI_CONTRACT, ABI_MINT_NFT_1155, ABI_MINT_NFT_721 } from "@/data";
+import { fetchGetIpfsHash, retryCallPromise } from "@/helpers";
+import { useContract } from "@/hooks/useContract";
+import { useAppSelector } from "@/libs/redux/store";
+import { getAtpBalance } from "@/stores/app/selectors";
 import {
   useCreateCollectionDraftMutation,
+  useGetAllCollectionQuery,
   useLazyGetDetailCollectionQuery,
   useLazyGetSignatureQuery,
 } from "@/stores/collection/api";
-import { fetchGetIpfsHash, retryCallPromise } from "@/helpers";
 import {
   useCreateMintMutation,
   useLazyGetDetailNftQuery,
 } from "@/stores/nft/api";
-import { useAppSelector } from "@/libs/redux/store";
-import { getAtpBalance } from "@/stores/app/selectors";
+import get from "lodash/get";
+import Image from "next/image";
+import { Controller, useForm } from "react-hook-form";
+import { useAccount } from "wagmi";
+import Filter from "../../../my-generated-nfts/_component/Filter";
 
 let ipfsHash = "";
 
@@ -41,7 +45,6 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
   const [nftCollection, setNftCollection] = useState(1);
   const [nftType, setNftType] = useState(NftTypeEnum.ERC_721);
   const [collection, setCollection] = useState("");
-  const [quantity, setQuantity] = useState("");
   const [getSignature] = useLazyGetSignatureQuery();
   const [createCollectionDraft] = useCreateCollectionDraftMutation();
   const [getDetailCollection] = useLazyGetDetailCollectionQuery();
@@ -51,26 +54,52 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
     id: string;
     contractMint: string;
   }>();
-  const [titleNft, setTitleNft] = useState("");
-  const [description, setDescription] = useState("");
-  const [newNftCollection, setNewNftCollection] = useState("");
   const [balanceError, setBalanceError] = useState(false);
   const balance = useAppSelector(getAtpBalance);
+
+  const { data: listCollection } = useGetAllCollectionQuery(
+    {
+      walletAddress: account?.address,
+      status: ["deployed"],
+    },
+    { skip: !account.address }
+  ) as any;
 
   const getContract = useContract(
     ABI_CONTRACT,
     process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!
   );
 
-  const [collectionAddress, idCollection, type] = collection?.split("*");
+  const {
+    handleSubmit,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm<any>({
+    defaultValues: {
+      title: "",
+      quantity: "",
+      collectionName: "",
+      description: "",
+    },
+  });
+
+  const [collectionAddress] = collection?.split("*");
+
   const getContractMintNft = useContract(
     nftType === NftTypeEnum.ERC_1155 ? ABI_MINT_NFT_1155 : ABI_MINT_NFT_721,
-    infoMintNft ? infoMintNft?.contractMint : collectionAddress
+    infoMintNft
+      ? infoMintNft?.contractMint
+      : collectionAddress ||
+          (nftType === NftTypeEnum.ERC_1155
+            ? process.env.NEXT_PUBLIC_COLLECTION_ADDRESS_DEFAULT_1155!
+            : process.env.NEXT_PUBLIC_COLLECTION_ADDRESS_DEFAULT_721!)
   );
 
   function initValueCollection(value: any) {
+    onChangeOptionCollection(3);
     setCollection(value);
-    const [collectionAddress, idCollection, type] = value?.split("*");
+    const [_collectionAddress, _idCollection, type] = value?.split("*");
     setNftType(type);
   }
 
@@ -94,7 +123,9 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
       const res = await getSignature({
         walletAddress: account.address,
         type: nftType,
-        name: newNftCollection ? newNftCollection : randomNameCollection,
+        name: !!watch("collectionName")
+          ? watch("collectionName")
+          : randomNameCollection,
         symbol: "AI",
         nonce,
         baseURI: "AI",
@@ -168,7 +199,7 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
       walletAddress: account.address,
     });
 
-    if (res.data.id) {
+    if (res?.data?.id) {
       await onGetDetailCollection(res.data.id);
     } else {
       onMindError();
@@ -197,7 +228,14 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
       const contract: any = await getContractMintNft;
       let res;
       if (nftType === NftTypeEnum.ERC_1155) {
-        res = await contract?.mint(account.address, id, 1, "0x0", ipfsHash);
+        const quantity = Number(watch("quantity"));
+        res = await contract?.mint(
+          account.address,
+          new Date().getTime().toString(),
+          quantity,
+          "0x00",
+          ipfsHash
+        );
       } else {
         res = await contract?.mint(account.address, ipfsHash);
       }
@@ -217,14 +255,36 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
   }
 
   const handleMint = async () => {
-    if (nftCollection === 2 || !collection) {
+    if (nftCollection === 2) {
       const nonce = await onGetNonce();
       const res = await onCreateCollection(nonce);
       if (res.signature) {
-        await onCreateCollectionOnChain({ name: newNftCollection, ...res });
+        await onCreateCollectionOnChain({
+          name: watch("collectionName"),
+          ...res,
+        });
       }
-    } else {
-      onMintNft(new Date().getTime().toString());
+    }
+    if (nftCollection === 3) {
+      const [_collectionAddress, collectionId] = collection?.split("*");
+      onMintNft(collectionId);
+    }
+    if (nftCollection === 1) {
+      const res: any = await getDetailCollection({
+        id:
+          nftType === NftTypeEnum.ERC_1155
+            ? process.env.NEXT_PUBLIC_COLLECTION_ADDRESS_DEFAULT_1155!
+            : process.env.NEXT_PUBLIC_COLLECTION_ADDRESS_DEFAULT_721!,
+      });
+      if (res?.data?.id) {
+        setInfoMintNft({
+          id: res?.data?.id,
+          contractMint: res?.data?.contract.address,
+        });
+        return;
+      }
+      onMindError();
+      return;
     }
   };
 
@@ -235,7 +295,6 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
     bodyData.append("file", dataImg.dataImg);
     const res: any = await fetchGetIpfsHash(bodyData);
     console.log("🚀 ~ handleGetIpfsHash ~ res:", res);
-
     if (res?.data?.IpfsHash) {
       ipfsHash = res.data.IpfsHash;
       handleMint();
@@ -251,14 +310,14 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
   ) {
     const res: any = await createMintNft({
       id: id,
-      name: titleNft,
-      description: description,
+      name: watch("title"),
+      description: watch("description"),
       image: ipfsHash,
       transactionHash,
       walletAddress: account.address,
     });
 
-    if (res.data.id) {
+    if (res?.data?.id) {
       onDetailNft(res.data.id);
     } else {
       onMindError();
@@ -292,7 +351,14 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
       setCollection("");
       setNftType(NftTypeEnum.ERC_721);
     }
+    if (value === 1) {
+      setCollection("");
+    }
     setNftCollection(value);
+  }
+
+  function submitData() {
+    handleGetIpfsHash();
   }
 
   return (
@@ -317,13 +383,20 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
                   A New NFT collection
                 </Radio>
               </Radio.Group>
-              {nftCollection === 1 && (
-                <Filter
-                  defaultValue={"Existing collections"}
-                  value={collection}
-                  onChange={initValueCollection}
-                  onInitValue={initValueCollection}
-                />
+              {listCollection?.length > 0 && (
+                <div>
+                  <Radio
+                    checked={nftCollection === 3}
+                    value={3}
+                    className="!font-roboto"
+                  />
+                  <Filter
+                    defaultValue={"Existing collections"}
+                    value={collection || "Existing collections"}
+                    onChange={initValueCollection}
+                    data={listCollection}
+                  />
+                </div>
               )}
             </div>
           </WrapperItem>
@@ -357,43 +430,99 @@ const MintNftModal: React.FC<MintNftModalProps> = ({
             <Image src={dataImg.urlImage} alt="" width={180} height={180} />
           </WrapperItem>
           <WrapperItem label="Title of NFT">
-            <CommonInput
-              className="w-full"
-              onChange={(e) => setTitleNft(e.target.value)}
+            <Controller
+              name="title"
+              control={control}
+              rules={{
+                required: "This field is required",
+                maxLength: {
+                  value: 255,
+                  message: "Only accept up to 255 characters.",
+                },
+              }}
+              render={({ field }) => (
+                <CommonInput {...field} className="w-full" />
+              )}
             />
+            <p className="text-red-500 text-[14px]">
+              {get(errors, "title.message", "").toString()}
+            </p>
           </WrapperItem>
           {nftType === NftTypeEnum.ERC_1155 && (
             <WrapperItem label="Quantity">
-              <CommonInput
-                className="w-full"
-                onChange={(e) => setQuantity(e.target.value)}
+              <Controller
+                name="quantity"
+                control={control}
+                rules={{
+                  required: "This field is required",
+                }}
+                render={({ field }) => {
+                  const { onChange, ...otherField } = field;
+                  function handleChange(e: any) {
+                    if (!/^\d+$/.test(e?.target?.value)) {
+                      return e?.preventDefault();
+                    }
+                    onChange(e?.target?.value);
+                  }
+                  return (
+                    <CommonInput
+                      onChange={handleChange}
+                      className="w-full"
+                      {...otherField}
+                    />
+                  );
+                }}
               />
+              <p className="text-red-500 text-[14px]">
+                {get(errors, "quantity.message", "").toString()}
+              </p>
             </WrapperItem>
           )}
           {nftCollection === 2 && (
             <WrapperItem label="New Title of NFT collection">
-              <CommonInput
-                className="w-full"
-                onChange={(e) => setNewNftCollection(e.target.value)}
+              <Controller
+                name="collectionName"
+                control={control}
+                rules={{
+                  required: "This field is required",
+                  maxLength: {
+                    value: 255,
+                    message: "Only accept up to 255 characters.",
+                  },
+                }}
+                render={({ field }) => (
+                  <CommonInput className="w-full" {...field} />
+                )}
               />
+              <p className="text-red-500 text-[14px]">
+                {get(errors, "collectionName.message", "").toString()}
+              </p>
             </WrapperItem>
           )}
           <WrapperItem label="Description">
-            <CommonInput
-              className="w-full"
-              onChange={(e) => setDescription(e.target.value)}
+            <Controller
+              name="description"
+              control={control}
+              rules={{
+                required: "This field is required",
+                maxLength: {
+                  value: 255,
+                  message: "Only accept up to 255 characters.",
+                },
+              }}
+              render={({ field }) => (
+                <CommonInput className="w-full" {...field} />
+              )}
             />
+            <p className="text-red-500 text-[14px]">
+              {get(errors, "description.message", "").toString()}
+            </p>
           </WrapperItem>
           <CommonButton
             variant={CommonButtonVariantEnum.outline}
             isShowArrow={false}
             className="w-fit text-sm"
-            onClick={handleGetIpfsHash}
-            disabled={
-              !titleNft ||
-              !description ||
-              (!newNftCollection && nftCollection === 2)
-            }
+            onClick={handleSubmit(submitData)}
           >
             Mint
           </CommonButton>

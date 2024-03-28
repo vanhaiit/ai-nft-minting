@@ -55,3 +55,8 @@ p {
 .ant-radio:not(.ant-radio-checked) .ant-radio-inner {
   background-color: black !important;
 }
+
+.ant-modal {
+  display: flex;
+  justify-content:center;
+}

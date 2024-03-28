@@ -1,39 +1,45 @@
 "use client";
+import { RainbowKitProvider, getDefaultConfig } from "@rainbow-me/rainbowkit";
 import {
-  RainbowKitProvider,
-  getDefaultConfig,
-  getDefaultWallets,
-} from "@rainbow-me/rainbowkit";
-import {
-  argentWallet,
-  ledgerWallet,
+  coinbaseWallet,
+  metaMaskWallet,
   trustWallet,
+  walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as React from "react";
 import { WagmiProvider } from "wagmi";
 import { bsc } from "wagmi/chains";
 
-const { wallets } = getDefaultWallets();
+const queryClient = new QueryClient();
 
-const config = getDefaultConfig({
-  appName: "RainbowKit demo",
-  projectId: "YOUR_PROJECT_ID",
-  wallets: [
-    ...wallets,
-    {
-      groupName: "Other",
-      wallets: [argentWallet, trustWallet, ledgerWallet],
-    },
-  ],
+const _bsc = {
+  ...bsc,
+  id: 97,
+  rpcUrls: {
+    default: { http: ["https://bsc-testnet-rpc.publicnode.com"] },
+  },
+};
+export const config = getDefaultConfig({
+  appName: "NFT AI Minting",
+  projectId: "9d662d196fc0e42029d6f2d541260b94",
   chains: [
-    bsc,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [bsc] : []),
+    _bsc,
+    // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [bsc] : []),
   ],
   ssr: true,
+  wallets: [
+    {
+      groupName: "Popular",
+      wallets: [
+        metaMaskWallet,
+        walletConnectWallet,
+        coinbaseWallet,
+        trustWallet,
+      ],
+    },
+  ],
 });
-
-const queryClient = new QueryClient();
 
 export function RainBowProviders({ children }: { children: React.ReactNode }) {
   return (

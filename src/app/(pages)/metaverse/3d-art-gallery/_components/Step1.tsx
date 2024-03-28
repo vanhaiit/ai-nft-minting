@@ -8,8 +8,10 @@ import React from "react";
 import { TypeAnimation } from "react-type-animation";
 import { twMerge } from "tailwind-merge";
 import { ImageAssets } from "../../../../../../public";
+import { useAccount } from "wagmi";
 
 const Step1: React.FC<Step1Props> = ({ onChangeStep }) => {
+  const account = useAccount();
   return (
     <div className="w-full">
       <div className={twMerge("w-full h-full", "flex flex-col")}>
@@ -58,6 +60,7 @@ const Step1: React.FC<Step1Props> = ({ onChangeStep }) => {
           <CommonButton
             className="w-fit mt-4 mx-auto "
             onClick={() => onChangeStep(StepEnum.STEP_2)}
+            disabled={!account?.address}
           >
             Generate
           </CommonButton>

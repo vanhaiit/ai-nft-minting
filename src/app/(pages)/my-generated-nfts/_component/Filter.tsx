@@ -1,23 +1,13 @@
 import React, { Fragment, useEffect } from "react";
 import { NextIcon } from "@/app/_components/icon";
 import { Select, SelectProps } from "antd";
-import { useGetAllCollectionQuery } from "@/stores/collection/api";
-import { useAccount } from "wagmi";
 
 const Filter: React.FC<FilterProps> = ({
   defaultValue,
   onInitValue,
+  data,
   ...otherProps
 }) => {
-  const account = useAccount();
-  const { data } = useGetAllCollectionQuery(
-    {
-      walletAddress: account?.address,
-      status: ["deployed"],
-    },
-    { skip: !account.address }
-  ) as any;
-
   useEffect(() => {
     if (data?.length > 0) {
       onInitValue?.(
@@ -59,5 +49,6 @@ export default Filter;
 interface FilterProps extends SelectProps {
   defaultValue: string;
   value: string;
+  data: any;
   onInitValue?: (value: any) => void;
 }

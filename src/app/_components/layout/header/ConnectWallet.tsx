@@ -1,30 +1,26 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @next/next/no-img-element */
 "use client";
-import React, {
-  Fragment,
-  ReactNode,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import CommonButton, { CommonButtonVariantEnum } from "../../CommonButton";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
-import CommonDropdown from "../../CommonDropdown";
-import { injected } from "wagmi/connectors";
-import { twJoin } from "tailwind-merge";
+import { ART_GALLERY, MY_GENERATE_NFTS } from "@/constants";
+import { ABI_TOKEN_ATQ } from "@/data";
 import { formatAddress } from "@/helpers";
-import get from "lodash/get";
-import Link from "next/link";
-import { MY_GENERATE_NFTS } from "@/constants";
-import Web3 from "web3";
 import { useAppDispatch } from "@/libs/redux/store";
 import { setAtqBalance } from "@/stores/app";
-import { ABI_TOKEN_ATQ } from "@/data";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import Link from "next/link";
+import { useEffect } from "react";
+import { twJoin } from "tailwind-merge";
+import { useAccount, useDisconnect } from "wagmi";
+import Web3 from "web3";
+import CommonButton from "../../CommonButton";
+import CommonDropdown from "../../CommonDropdown";
+import { useRouter } from "next/navigation";
 
 const ConnectWalletButton = (props: any) => {
   const account = useAccount();
   const { disconnect } = useDisconnect();
-  const { connect } = useConnect();
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -44,56 +40,97 @@ const ConnectWalletButton = (props: any) => {
         console.log("🚀 ~ file: ConnectWallet.tsx:35 ~ error:", error);
       }
     })();
-  }, [account.address]);
+  }, [account?.address]);
 
-  if (!account?.isConnected)
-    return (
-      <CommonButton
-        onClick={() => connect({ connector: injected() })}
-        {...props}
-        isShowArrow={false}
-      >
-        Connect
-      </CommonButton>
-    );
+  useEffect(() => {
+    (async () => {
+      if (account.chainId !== 97) {
+        disconnect();
+        router.replace("/");
+      }
+    })();
+  }, [account?.chainId]);
+
   return (
-    <>
-      <CommonDropdown
-        contentDropdown={
-          <>
-            <Link
-              href={MY_GENERATE_NFTS}
-              className={twJoin(
-                "py-2",
-                "w-full",
-                "border-b border-neutral3",
-                "text-neutral1 text-center"
-              )}
-            >
-              My AI-generated NFTs
-            </Link>
-            <button
-              onClick={() => disconnect()}
-              className="w-full py-2 text-center cursor-pointer"
-            >
-              Sign-out
-            </button>
-          </>
-        }
-      >
-        <div
-          className={twJoin(
-            "px-4 py-2",
-            "text-primary1",
-            "bg-primary1/20",
-            "border border-primary1"
-          )}
-        >
-          Connected{" "}
-          {get(account, "address", false) && formatAddress(account.address!)}
-        </div>
-      </CommonDropdown>
-    </>
+    <ConnectButton.Custom>
+      {({
+        account,
+        chain,
+        openConnectModal,
+        authenticationStatus,
+        mounted,
+      }) => {
+        const ready = mounted && authenticationStatus !== "loading";
+        const connected =
+          ready &&
+          account &&
+          chain &&
+          (!authenticationStatus || authenticationStatus === "authenticated");
+        return (
+          <div
+            {...(!ready && {
+              "aria-hidden": true,
+              style: {
+                opacity: 0,
+                pointerEvents: "none",
+                userSelect: "none",
+              },
+            })}
+          >
+            {(() => {
+              if (!connected) {
+                return (
+                  <CommonButton
+                    onClick={openConnectModal}
+                    {...props}
+                    isShowArrow={false}
+                  >
+                    Connect
+                  </CommonButton>
+                );
+              }
+
+              return (
+                <CommonDropdown
+                  contentDropdown={
+                    <>
+                      <Link
+                        href={MY_GENERATE_NFTS}
+                        className={twJoin(
+                          "py-2",
+                          "w-full",
+                          "border-b border-neutral3",
+                          "text-neutral1 text-center"
+                        )}
+                      >
+                        My AI-generated NFTs
+                      </Link>
+                      <button
+                        onClick={() => disconnect()}
+                        className="w-full py-2 text-center cursor-pointer"
+                      >
+                        Sign-out
+                      </button>
+                    </>
+                  }
+                >
+                  <div
+                    className={twJoin(
+                      "px-4 py-2",
+                      "text-primary1",
+                      "bg-primary1/20",
+                      "border border-primary1"
+                    )}
+                  >
+                    Connected {formatAddress(account.displayName!)}
+                  </div>
+                </CommonDropdown>
+              );
+            })()}
+          </div>
+        );
+      }}
+    </ConnectButton.Custom>
   );
 };
 

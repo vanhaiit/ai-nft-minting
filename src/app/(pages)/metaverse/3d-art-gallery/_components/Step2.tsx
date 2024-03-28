@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { StepEnum } from "@/types";
 import { twMerge, twJoin } from "tailwind-merge";
@@ -13,19 +14,17 @@ import WaveAnimation from "@/app/_components/WaveAnimation";
 
 const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
   const [isReGenerate, setIsReGenerate] = useState(false);
-  const [urlReGenerate, setUrlReGenerate] = useState("");
   const [isShowCardMint, setIsShowCardMint] = useState(false);
   const [showText2, setShowText2] = useState(false);
-  const [isGenerateTextToImage, setIsGenerateTextToImage] = useState(false);
   const [valueText, setValueText] = useState("");
-  const [isUploadGenerateAiImg, setIsUploadGenerateAiImg] = useState(false);
+  const [isGenerateAi, setIsGenerateAi] = useState(false);
   const [fileValue, setFileValue] = useState<File>();
   const [reGenerateData, setReGenerateData] = useState<any>();
   const [start, setStart] = useState<any>(false);
 
-  const [dataNft1, setDataNft1] = useState({ isMinted: false, urlImage: "" });
-  const [dataNft2, setDataNft2] = useState({ isMinted: false, urlImage: "" });
-  const [dataNft3, setDataNft3] = useState({ isMinted: false, urlImage: "" });
+  const [dataNft1] = useState({ isMinted: false, urlImage: "" });
+  const [dataNft2] = useState({ isMinted: false, urlImage: "" });
+  const [dataNft3] = useState({ isMinted: false, urlImage: "" });
 
   useEffect(() => {
     if (dataNft1.urlImage && dataNft2.urlImage && dataNft3.urlImage) {
@@ -65,11 +64,6 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
           <GenerateText
             valueText={valueText}
             onChangeValueText={(value) => setValueText(value)}
-            onGenerateTextToImg={() => {
-              setIsShowCardMint(true);
-              setIsGenerateTextToImage(!isGenerateTextToImage);
-              setStart(true);
-            }}
           />
           <GenerateFile onChangeSelectFile={(value) => setFileValue(value)} />
         </div>
@@ -77,12 +71,13 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
           className="w-fit mx-auto"
           onClick={() => {
             setIsShowCardMint(true);
-            setIsUploadGenerateAiImg(!isUploadGenerateAiImg);
+            setIsGenerateAi(!isGenerateAi);
             setStart(true);
+            setIsReGenerate(false);
           }}
-          disabled={!valueText || !fileValue}
+          disabled={(!valueText && !fileValue) || (fileValue && !valueText)}
         >
-          Upload
+          Generate
         </CommonButton>
       </CommonContainer>
       <CommonContainer
@@ -101,8 +96,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
                   key={1}
                   valueText={valueText}
                   valueFile={fileValue}
-                  isGenerateTextToImage={isGenerateTextToImage}
-                  isUploadGenerateAiImg={isUploadGenerateAiImg}
+                  isGenerate={isGenerateAi}
                   onRegenerate={(value) => {
                     setIsReGenerate(true);
                     setReGenerateData(value);
@@ -112,8 +106,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
                   key={2}
                   valueText={valueText}
                   valueFile={fileValue}
-                  isGenerateTextToImage={isGenerateTextToImage}
-                  isUploadGenerateAiImg={isUploadGenerateAiImg}
+                  isGenerate={isGenerateAi}
                   onRegenerate={(value) => {
                     setIsReGenerate(true);
                     setReGenerateData(value);
@@ -123,8 +116,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
                   key={3}
                   valueText={valueText}
                   valueFile={fileValue}
-                  isGenerateTextToImage={isGenerateTextToImage}
-                  isUploadGenerateAiImg={isUploadGenerateAiImg}
+                  isGenerate={isGenerateAi}
                   onRegenerate={(value) => {
                     setIsReGenerate(true);
                     setReGenerateData(value);

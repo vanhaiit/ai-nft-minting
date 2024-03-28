@@ -1,12 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useEffect, useState } from "react";
-
 import CommonContainer from "@/app/_components/CommonContainer";
 import { ART_GALLERY } from "@/constants";
+import { useGetAllCollectionQuery } from "@/stores/collection/api";
 import { useLazyGetAllNftQuery } from "@/stores/nft/api";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { TypeAnimation } from "react-type-animation";
 import { twJoin } from "tailwind-merge";
 import { useAccount } from "wagmi";
@@ -29,6 +30,14 @@ const Generate = () => {
   const [hasNft, setHasNft] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [detailData, setDetailData] = useState<any>();
+
+  const { data: listCollection } = useGetAllCollectionQuery(
+    {
+      walletAddress: account?.address,
+      status: ["deployed"],
+    },
+    { skip: !account.address }
+  ) as any;
 
   const handleGetAllNft = async () => {
     const params = {
@@ -54,7 +63,7 @@ const Generate = () => {
   useEffect(() => {
     if (!account.address) return;
     handleGetAllNft();
-  }, [!account.address, currentPage, valueFilter, searchValue]);
+  }, [account.address, currentPage, valueFilter, searchValue]);
 
   return (
     <CommonContainer
@@ -110,6 +119,7 @@ const Generate = () => {
               value={valueFilter}
               defaultValue={valueFilter}
               onChange={(value) => setValueFilter(value)}
+              data={listCollection}
             />
           </div>
           <div className="w-full grid grid-cols-4 gap-6 min-h-[696px] flex items-start">
@@ -151,7 +161,7 @@ const Generate = () => {
           />
 
           <Link
-            className="w-fit !w-[96px] !h-[32px] bg-neutral2 text-center flex justify-center items-center text-neutral6"
+            className="!w-[96px] !h-[32px] bg-neutral2 text-center flex justify-center items-center text-neutral6"
             href={ART_GALLERY}
           >
             Generate

@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { twJoin } from "tailwind-merge";
-import { ArrowIcon } from "@/app/_components/icon";
 
 const GenerateText: React.FC<GenerateTextProps> = ({
   valueText,
   onChangeValueText,
-  onGenerateTextToImg,
 }) => {
   return (
     <div
@@ -26,7 +24,7 @@ const GenerateText: React.FC<GenerateTextProps> = ({
       >
         {valueText}
       </textarea>
-      <button
+      {/* <button
         className={twJoin(
           "flex items-center gap-x-1 ml-auto text-sm text-neutral4",
           valueText && "text-primary1"
@@ -36,7 +34,7 @@ const GenerateText: React.FC<GenerateTextProps> = ({
       >
         Generate
         <ArrowIcon />
-      </button>
+      </button> */}
     </div>
   );
 };
@@ -46,6 +44,4 @@ export default GenerateText;
 interface GenerateTextProps {
   valueText: string;
   onChangeValueText: (value: string) => void;
-
-  onGenerateTextToImg: () => void;
 }

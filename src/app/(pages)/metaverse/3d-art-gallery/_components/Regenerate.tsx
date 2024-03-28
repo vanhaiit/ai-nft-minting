@@ -96,8 +96,8 @@ const Regenerate: React.FC<RegenerateProps> = ({
       )}
 
       {!isReGenerate && !isMinted && (
-        <div className="coating w-full hidden h-full flex-col items-center justify-center px-11 bg-black1/80 gap-y-2 ">
-          <p className="font-medium">
+        <div className="coating w-full hidden h-full flex-col items-center justify-center px-11 bg-black1/80 gap-y-2 text-center">
+          <p className="font-medium text-[16px] mb-[42px]">
             I do not like this image. I want to regenerate one more.
           </p>
           <button
@@ -164,7 +164,7 @@ const Regenerate: React.FC<RegenerateProps> = ({
       </CommonModal>
       <CommonModal open={isOpenModalError}>
         <div className="flex flex-col items-center gap-y-4">
-          <p className="w-full text-center">
+          <p className="w-full text-center text-[16px]">
             Something went wrong! Please try again.
           </p>
           <CommonButton
@@ -181,7 +181,7 @@ const Regenerate: React.FC<RegenerateProps> = ({
       </CommonModal>
       <CommonModal open={isOpenModalMinting} className="!w-[453px]">
         <div className="flex flex-col gap-y-6 items-center">
-          <p className="w-full text-center">
+          <p className="w-full text-center text-[16px]">
             Please wait until your NFT minting transaction is completed
           </p>
           <Image
