@@ -15,11 +15,17 @@ import CommonButton, {
 const ArtGallery = () => {
   const account = useAccount();
   const balance = useAppSelector(getAtpBalance);
+  const confirmAlert = localStorage.getItem("ConfirmAlert");
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [step, setStep] = useState<StepEnum>(StepEnum.STEP_1);
   const [contentModal, setContentModal] = useState<any>();
 
+  function handleConfirm() {
+    localStorage.setItem("ConfirmAlert", "CONFIRMED");
+  }
+
   useEffect(() => {
+    if (confirmAlert) return;
     setIsOpenModal(true);
     if (!account.address) return setContentModal(<Fragment />);
     if (balance < 50) {
@@ -78,7 +84,10 @@ const ArtGallery = () => {
               variant={CommonButtonVariantEnum.outline}
               isShowArrow={false}
               className="w-fit text-sm"
-              onClick={() => setIsOpenModal(false)}
+              onClick={() => {
+                setIsOpenModal(false);
+                handleConfirm();
+              }}
             >
               I got it
             </CommonButton>

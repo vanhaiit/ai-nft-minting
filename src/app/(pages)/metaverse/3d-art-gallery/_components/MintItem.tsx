@@ -142,22 +142,24 @@ const MintItem: React.FC<MintItemProps> = ({
         disabled={isMinted || isGenerateImageError || !dataImg.dataImg}
         onClick={() => onRegenerate(dataImg)}
       ></button>
-      <button
-        className={twJoin(
-          "button",
-          "py-4",
-          "w-full",
-          "button",
-          isMinted ? "bg-primary1 text-black" : "bg-black1/70",
-          "center-root gap-x-2",
-          "absolute bottom-0 left-0"
-        )}
-        onClick={() => setIsOpenModal(true)}
-        disabled={isMinted || isGenerateImageError || !dataImg.dataImg}
-      >
-        {isMinted && <CheckIcon className={twJoin("icon", "text-black1")} />}
-        Mint
-      </button>
+      {!isGenerateImageError && (
+        <button
+          className={twJoin(
+            "button",
+            "py-4",
+            "w-full",
+            "button",
+            isMinted ? "bg-primary1 text-black" : "bg-black1/70",
+            "center-root gap-x-2",
+            "absolute bottom-0 left-0"
+          )}
+          onClick={() => setIsOpenModal(true)}
+          disabled={isMinted || isGenerateImageError || !dataImg.dataImg}
+        >
+          {isMinted && <CheckIcon className={twJoin("icon", "text-black1")} />}
+          Mint
+        </button>
+      )}
       <MintNftModal
         open={isOpenModal}
         onCancel={() => setIsOpenModal(false)}

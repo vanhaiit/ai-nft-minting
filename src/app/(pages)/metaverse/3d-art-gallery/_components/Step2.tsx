@@ -9,7 +9,7 @@ import GenerateFile from "./GenerateFile";
 import GenerateText from "./GenerateText";
 import CommonContainer from "@/app/_components/CommonContainer";
 import CommonButton from "@/app/_components/CommonButton";
-import Regenerate from "./Regenerate";
+import Regenerate from "./Step3";
 import WaveAnimation from "@/app/_components/WaveAnimation";
 
 const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
@@ -18,7 +18,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
   const [showText2, setShowText2] = useState(false);
   const [valueText, setValueText] = useState("");
   const [isGenerateAi, setIsGenerateAi] = useState(false);
-  const [fileValue, setFileValue] = useState<File>();
+  const [fileValue, setFileValue] = useState<File | undefined>();
   const [reGenerateData, setReGenerateData] = useState<any>();
   const [start, setStart] = useState<any>(false);
 
@@ -32,6 +32,12 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
       return;
     }
   }, [dataNft1, dataNft2, dataNft3]);
+
+  useEffect(() => {
+    if (step === StepEnum.STEP_2) {
+      setIsReGenerate(false);
+    }
+  }, [step]);
 
   return (
     <div className={twMerge("w-full h-full", "flex flex-col ")}>
@@ -100,6 +106,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
                   onRegenerate={(value) => {
                     setIsReGenerate(true);
                     setReGenerateData(value);
+                    onChangeStep(StepEnum.STEP_3);
                   }}
                 />
                 <MintItem
@@ -110,6 +117,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
                   onRegenerate={(value) => {
                     setIsReGenerate(true);
                     setReGenerateData(value);
+                    onChangeStep(StepEnum.STEP_3);
                   }}
                 />
                 <MintItem
@@ -120,6 +128,7 @@ const Step2: React.FC<Step2Props> = ({ onChangeStep, step }) => {
                   onRegenerate={(value) => {
                     setIsReGenerate(true);
                     setReGenerateData(value);
+                    onChangeStep(StepEnum.STEP_3);
                   }}
                 />
               </>

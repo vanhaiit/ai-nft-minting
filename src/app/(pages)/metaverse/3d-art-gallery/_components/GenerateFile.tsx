@@ -28,12 +28,15 @@ const GenerateFile: React.FC<GenerateFileProp> = ({ onChangeSelectFile }) => {
       ) {
         return setError(true);
       }
-      const newList = [...listFileName];
-      newList.push(selectedFile.name);
-      setListFileName(newList);
+      setListFileName([selectedFile.name]);
       onChangeSelectFile(selectedFile);
     }
   };
+
+  function handleDelete() {
+    setListFileName([]);
+    onChangeSelectFile(undefined);
+  }
 
   return (
     <>
@@ -42,7 +45,7 @@ const GenerateFile: React.FC<GenerateFileProp> = ({ onChangeSelectFile }) => {
           "p-4",
           "border border-neutral4",
           "w-full max-h-[148px] h-[148px] overflow-auto",
-          "flex flex-col justify-between"
+          "flex flex-col justify-between  "
         )}
       >
         {listFileName.length > 0 ? (
@@ -51,14 +54,22 @@ const GenerateFile: React.FC<GenerateFileProp> = ({ onChangeSelectFile }) => {
               <div
                 className={twJoin(
                   "pb-2 border-b",
-                  "flex items-center gap-x-1",
+                  "flex items-center gap-x-1  justify-between",
                   index === listFileName.length - 1 &&
                     "text-primary1 border-b-primary1"
                 )}
                 key={index}
               >
-                <FileIcon />
-                <p>{item}</p>
+                <div className="flex gap-[4px]">
+                  <FileIcon />
+                  <p>{item}</p>
+                </div>
+                <p
+                  onClick={handleDelete}
+                  className="text-right !cursor-pointer"
+                >
+                  Delete
+                </p>
               </div>
             ))}
           </div>
@@ -68,14 +79,14 @@ const GenerateFile: React.FC<GenerateFileProp> = ({ onChangeSelectFile }) => {
           </p>
         )}
 
-        <div className="w-[72px] h-5 overflow-hidden relative ml-auto [&>.text]:hover:!text-primary1 !cursor-pointer">
+        <div className="w-[72px] h-5 overflow-hidden relative ml-auto [&>.text]:hover:!text-primary1">
           <input
             type="file"
             accept="image/png, image/gif, image/jpeg"
             onChange={handleChange}
-            className="opacity-0 w-17 !cursor-pointer"
+            className="opacity-0 w-17 "
           />
-          <div className="text absolute top-0 flex items-center gap-x-1 text-sm text-neutral4 -z-10 !cursor-pointer">
+          <div className="text absolute top-0 flex items-center gap-x-1 text-sm text-neutral4 -z-10">
             Select
             <ArrowIcon />
           </div>
@@ -109,5 +120,5 @@ const GenerateFile: React.FC<GenerateFileProp> = ({ onChangeSelectFile }) => {
 export default GenerateFile;
 
 interface GenerateFileProp {
-  onChangeSelectFile: (value: File) => void;
+  onChangeSelectFile: (value: File | undefined) => void;
 }

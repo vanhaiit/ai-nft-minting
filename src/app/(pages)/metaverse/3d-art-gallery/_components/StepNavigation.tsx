@@ -25,7 +25,6 @@ const StepNavigation: React.FC<StepNavigationProps> = ({
       />
       <StepNavigationItems
         className={twJoin(StepEnum.STEP_3 === step && "bg-neutral1")}
-        onClick={() => onChangeStep(StepEnum.STEP_3)}
       />
     </div>
   );
@@ -35,13 +34,16 @@ export default StepNavigation;
 
 const StepNavigationItems: React.FC<ComponentPropsWithoutRef<"div">> = ({
   className,
+  onClick,
   ...otherProps
 }) => {
   return (
-    <span
-      className={twMerge("w-full h-1 bg-neutral1/50 cursor-pointer", className)}
-      {...otherProps}
-    />
+    <div className="w-full h-[30px] p-2  cursor-pointer" onClick={onClick}>
+      <span
+        className={twMerge("w-full h-1 flex bg-neutral1/50 ", className)}
+        {...otherProps}
+      />
+    </div>
   );
 };
 

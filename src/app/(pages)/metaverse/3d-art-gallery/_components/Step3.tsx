@@ -44,6 +44,7 @@ const Regenerate: React.FC<RegenerateProps> = ({
     }
     setIsReGenerate(false);
   };
+
   useEffect(() => {
     setDataImg(reGenerateData);
   }, [reGenerateData]);
@@ -55,6 +56,7 @@ const Regenerate: React.FC<RegenerateProps> = ({
         "[&>.coating]:hover:!flex",
         "[&>.button]:hover:!bg-primary1",
         isMinted && "border-4",
+        isReGenerateImageError && "flex justify-center items-center",
         className
       )}
       {...otherProps}
@@ -95,7 +97,7 @@ const Regenerate: React.FC<RegenerateProps> = ({
         </>
       )}
 
-      {!isReGenerate && !isMinted && (
+      {!isReGenerateImageError && !isReGenerate && !isMinted && (
         <div className="coating w-full hidden h-full flex-col items-center justify-center px-11 bg-black1/80 gap-y-2 text-center">
           <p className="font-medium text-[16px] mb-[42px]">
             I do not like this image. I want to regenerate one more.
@@ -108,7 +110,7 @@ const Regenerate: React.FC<RegenerateProps> = ({
           </button>
         </div>
       )}
-      {!isReGenerate && (
+      {!isReGenerateImageError && !isReGenerate && (
         <button
           className={twJoin(
             "button",

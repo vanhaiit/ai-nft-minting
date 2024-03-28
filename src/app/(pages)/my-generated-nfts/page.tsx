@@ -46,6 +46,7 @@ const Generate = () => {
       search: searchValue,
       collectionId: [valueFilter.split("*")[1]],
       walletAddress: account.address,
+      blockchainStatus: "MINTED",
     };
     const res: any = await getAllNft(params);
     if (res.status === "fulfilled") {
